@@ -1,9 +1,9 @@
-import { Button } from "@mui/material";
+import ImageGallery from "@/components/ImageGallery/ImageGallery";
 
 const Home = () => {
   return (
     <div>
-      <Button>Hello</Button>
+      <ImageGallery />
     </div>
   );
 };
