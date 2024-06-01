@@ -29,7 +29,7 @@ const Navbar = () => {
             Contact Us
           </Typography>
           <Typography component={Link} href="/medicine">
-            DashBoard
+            Dashboard
           </Typography>
         </Stack>
         <Button>Login</Button>
