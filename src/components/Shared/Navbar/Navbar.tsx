@@ -22,17 +22,19 @@ const Navbar = () => {
           uddy
         </Typography>
         <Stack direction={"row"} gap={4} justifyContent={"space-between"}>
-          <Typography component={Link} href="/consultation">
+          <Typography component={Link} href="/about">
             About us
           </Typography>
-          <Typography component={Link} href="/health-plans">
+          <Typography component={Link} href="/contact-us">
             Contact Us
           </Typography>
-          <Typography component={Link} href="/medicine">
+          <Typography component={Link} href="/dashboard">
             Dashboard
           </Typography>
         </Stack>
-        <Button>Login</Button>
+        <Link href={"/login"}>
+          <Button>Login</Button>
+        </Link>
       </Stack>
     </Container>
   );

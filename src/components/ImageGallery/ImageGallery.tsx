@@ -70,6 +70,7 @@ const ImageGallery = () => {
           sx={{
             fontSize: "2.5rem",
             fontWeight: "bold",
+            fontFamily: "-moz-initial",
           }}
         >
           Where All the Stories From Your Travels Find Their Home. <br />{" "}
