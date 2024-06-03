@@ -1,7 +1,40 @@
+"use client";
+import { registerUser } from "@/services/actions/registerUser";
+import { modifyPayload } from "@/utils/modifyPayload";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 const RegisterForm = () => {
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (values) => {
+    const data = modifyPayload(values);
+    try {
+      const res = await registerUser(data);
+      if (res?.data?.id) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error: any) {
+      toast(error.message);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -31,13 +64,18 @@ const RegisterForm = () => {
             sx={{
               fontFamily: "fantasy",
             }}
-            component="h6"
+            component="h1"
             color={"primary.main"}
             variant="h4"
           >
             Sign Up
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 3 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -45,8 +83,7 @@ const RegisterForm = () => {
               fullWidth
               id="name"
               label="Name"
-              name="name"
-              autoComplete="name"
+              {...register("name")}
               autoFocus
             />
             <TextField
@@ -55,6 +92,7 @@ const RegisterForm = () => {
               required
               fullWidth
               id="email"
+              {...register("email")}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -64,8 +102,8 @@ const RegisterForm = () => {
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
+              {...register("password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -79,7 +117,7 @@ const RegisterForm = () => {
               Sign Up
             </Button>
             <Box display="flex" justifyContent="flex-end">
-              <Box sx={{}}>
+              <Box>
                 Already have an account?{" "}
                 <Link
                   style={{
@@ -88,7 +126,7 @@ const RegisterForm = () => {
                     fontWeight: "bold",
                     paddingLeft: "1px",
                   }}
-                  href="login"
+                  href="/login"
                 >
                   Sign in
                 </Link>
