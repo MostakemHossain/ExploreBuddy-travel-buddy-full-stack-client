@@ -1,9 +1,22 @@
 "use client";
 import { registerUser } from "@/services/actions/registerUser";
+import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -14,6 +27,14 @@ type Inputs = {
 };
 
 const RegisterForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const router = useRouter();
   const {
     register,
@@ -27,12 +48,19 @@ const RegisterForm = () => {
       const res = await registerUser(data);
       if (res?.data?.id) {
         toast.success(res?.message);
-        router.push("/login");
+        const result = await userLogin({
+          email: values.email,
+          password: values.password,
+        });
+        if (result?.data?.accessToken) {
+          storeUserInfo({ accessToken: result?.data?.accessToken });
+          router.push("/");
+        }
       } else {
         toast.error(res?.message);
       }
     } catch (error: any) {
-      toast(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -105,9 +133,23 @@ const RegisterForm = () => {
               fullWidth
               label="Password"
               {...register("password")}
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button
               type="submit"
