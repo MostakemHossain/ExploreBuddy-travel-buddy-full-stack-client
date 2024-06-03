@@ -11,15 +11,15 @@ export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
 };
 
 export const getUserInfo = () => {
-  const authToken = getFormLocalStorage(authKey);
-  if (authKey) {
-    const decodeData: any = decodeToken(authToken as string);
-    return {
-      ...decodeData,
-      role: decodeData?.role.toLowerCase(),
-    };
-  }
-};
+    const authToken = getFormLocalStorage(authKey);
+    if (authToken) {
+      const decodeData: any = decodeToken(authToken);
+      return {
+        ...decodeData,
+        role: decodeData.role.toLowerCase(),
+      };
+    }
+  };
 export const isLoggedIn = () => {
   const authToken = getFormLocalStorage(authKey);
   if (authToken) {
