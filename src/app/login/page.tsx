@@ -1,7 +1,35 @@
+"use client";
+import { userLogin } from "@/services/actions/userLogin";
+import { storeUserInfo } from "@/services/auth.services";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+export type UserLogin = {
+  email: string;
+  password: string;
+};
 
 const LoginForm = () => {
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserLogin>();
+  const onSubmit: SubmitHandler<UserLogin> = async (values) => {
+    try {
+      const res= await userLogin(values);
+      if(res?.data?.accessToken){
+        storeUserInfo({accessToken:res?.data?.accessToken})
+      }
+    } catch (error:any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -31,35 +59,47 @@ const LoginForm = () => {
             sx={{
               fontFamily: "fantasy",
             }}
-            component="h6"
+            component="h1"
             color={"primary.main"}
             variant="h4"
           >
             Login
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 3 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               id="email"
+              {...register("email")}
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
             />
+            {errors.email && (
+              <Typography color="error">{errors.email.message}</Typography>
+            )}
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
+              {...register("password")}
               type="password"
               id="password"
               autoComplete="current-password"
             />
+            {errors.password && (
+              <Typography color="error">{errors.password.message}</Typography>
+            )}
             <Box display="flex" justifyContent="flex-end" sx={{ mt: 1 }}>
               <Link
                 style={{

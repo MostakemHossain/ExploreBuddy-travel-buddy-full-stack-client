@@ -27,6 +27,7 @@ const RegisterForm = () => {
       const res = await registerUser(data);
       if (res?.data?.id) {
         toast.success(res?.message);
+        router.push("/login");
       } else {
         toast.error(res?.message);
       }
