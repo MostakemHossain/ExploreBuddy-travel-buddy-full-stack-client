@@ -11,8 +11,10 @@ type TFormProps = {
 };
 const ExploreBuddyForm = ({ children, onSubmit }: TFormProps) => {
   const methods = useForm();
+  const { reset } = methods;
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
+    reset();
   };
   return (
     <FormProvider {...methods}>

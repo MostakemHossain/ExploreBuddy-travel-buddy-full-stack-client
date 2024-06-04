@@ -1,5 +1,4 @@
 "use client";
-import ExploreBuddyForm from "@/components/Forms/ExploreBuddyForm";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import Visibility from "@mui/icons-material/Visibility";
@@ -16,7 +15,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export type UserLogin = {
@@ -34,8 +33,12 @@ const LoginForm = () => {
   };
 
   const router = useRouter();
-
-  const handleLogin = async (values:FieldValues) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserLogin>();
+  const onSubmit: SubmitHandler<UserLogin> = async (values) => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
@@ -83,7 +86,12 @@ const LoginForm = () => {
           >
             Login
           </Typography>
-          <ExploreBuddyForm onSubmit={handleLogin}>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 3 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -164,7 +172,7 @@ const LoginForm = () => {
                 </Link>
               </Box>
             </Box>
-          </ExploreBuddyForm>
+          </Box>
         </Box>
       </Container>
     </Box>
