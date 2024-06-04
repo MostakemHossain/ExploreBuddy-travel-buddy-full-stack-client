@@ -12,11 +12,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+export const validationSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Please enter your password"),
+});
 
 export type UserLogin = {
   email: string;
@@ -25,6 +31,7 @@ export type UserLogin = {
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -45,6 +52,8 @@ const LoginForm = () => {
         toast.success(res?.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/");
+      } else {
+        setError(res?.message);
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -86,6 +95,21 @@ const LoginForm = () => {
           >
             Login
           </Typography>
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "4px",
+                  borderRadius: "5px",
+                  color: "white",
+                  mt: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
           <Box
             component="form"
             noValidate
@@ -147,7 +171,6 @@ const LoginForm = () => {
                 Forgot password?
               </Link>
             </Box>
-
             <Button
               type="submit"
               fullWidth

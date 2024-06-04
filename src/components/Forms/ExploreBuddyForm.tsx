@@ -4,13 +4,20 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
+type TFormConfig = {
+  resolver?: any;
+};
 
 type TFormProps = {
   children: React.ReactNode;
   onSubmit: SubmitHandler<FieldValues>;
-};
-const ExploreBuddyForm = ({ children, onSubmit }: TFormProps) => {
-  const methods = useForm();
+} & TFormConfig;
+const ExploreBuddyForm = ({ children, onSubmit, resolver }: TFormProps) => {
+  const formConfig: TFormConfig = {};
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
+  const methods = useForm(formConfig);
   const { reset } = methods;
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
