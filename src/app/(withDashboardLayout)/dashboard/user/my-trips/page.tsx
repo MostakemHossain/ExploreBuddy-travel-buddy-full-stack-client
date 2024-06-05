@@ -1,5 +1,8 @@
 "use client";
-import { useGetMyTripQuery } from "@/redux/api/tourApi";
+import {
+  useDeleteMyTripMutation,
+  useGetMyTripQuery,
+} from "@/redux/api/tourApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -12,18 +15,40 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
+import DeleteTripModal from "./components/DeleteTripModal";
 
 const MyTrip = () => {
   const { data, isLoading } = useGetMyTripQuery("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+  const [deleteMyTrip] = useDeleteMyTripMutation();
 
-  const handleEdit = (id) => {
+  const handleEdit = (id: string) => {
     // Implement edit functionality
     console.log("Edit", id);
   };
 
-  const handleDelete = (id) => {
-    // Implement delete functionality
-    console.log("Delete", id);
+  const handleDelete = (id: string) => {
+    setSelectedTripId(id);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (selectedTripId) {
+      try {
+        const res = await deleteMyTrip(selectedTripId).unwrap();
+        if (res.id) {
+          toast("Tour Deleted Successfully");
+        }
+      } catch (error: any) {
+        console.error(error);
+      } finally {
+        setIsModalOpen(false);
+        setSelectedTripId(null);
+      }
+    }
   };
 
   const columns: GridColDef[] = [
@@ -31,18 +56,25 @@ const MyTrip = () => {
       field: "photos",
       headerName: "Photo",
       flex: 1,
-      renderCell: (params) => (
-        <Image
-          width={100}
-          height={100}
-          src={params.value.length > 0 ? params.value[0] : ""}
-          alt="Trip Photo"
-          style={{ width: "100px", height: "100px", objectFit: "cover" }}
-        />
-      ),
+      renderCell: (params) => {
+        const photoSrc =
+          params.value.length > 0 ? params.value[0] : "/default-image.jpg"; // Provide a default image path
+        const isValidSrc =
+          photoSrc.startsWith("/") || photoSrc.startsWith("http");
+
+        return (
+          <Image
+            width={100}
+            height={100}
+            src={isValidSrc ? photoSrc : "/default-image.jpg"}
+            alt="Trip Photo"
+            style={{ width: "100px", height: "100px", objectFit: "cover" }}
+          />
+        );
+      },
     },
     { field: "destination", headerName: "Destination", flex: 1 },
-    { field: "budget", headerName: "Budget", flex: 1 },
+    { field: "budget", headerName: "Budget($)", flex: 1 },
     { field: "startDate", headerName: "Start Date", flex: 1 },
     { field: "endDate", headerName: "End Date", flex: 1 },
     {
@@ -60,7 +92,7 @@ const MyTrip = () => {
             sx={{
               color: "primary.main",
             }}
-            onClick={() => handleEdit(params.id)}
+            onClick={() => handleEdit(String(params.id))}
           >
             <EditIcon />
           </IconButton>
@@ -68,7 +100,7 @@ const MyTrip = () => {
             sx={{
               color: "red",
             }}
-            onClick={() => handleDelete(params.id)}
+            onClick={() => handleDelete(String(params.id))}
           >
             <DeleteIcon />
           </IconButton>
@@ -96,6 +128,11 @@ const MyTrip = () => {
       >
         My All Trips
       </Typography>
+      <DeleteTripModal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        onConfirm={confirmDelete}
+      />
       {!isLoading ? (
         <Box>
           <Typography color={"primary.main"} variant="h4" fontWeight={600}>

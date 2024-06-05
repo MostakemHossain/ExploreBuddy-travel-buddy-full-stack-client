@@ -25,7 +25,16 @@ const tourApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.myTrips],
     }),
+    deleteMyTrip: build.mutation({
+      query: (id) => {
+        return {
+          url: `/trips/my-trips/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [tagTypes.myTrips],
+    }),
   }),
 });
 
-export const { useCreateTourMutation, useGetMyTripQuery } = tourApi;
+export const { useCreateTourMutation, useGetMyTripQuery,useDeleteMyTripMutation } = tourApi;
