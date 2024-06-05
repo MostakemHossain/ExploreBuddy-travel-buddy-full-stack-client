@@ -1,3 +1,4 @@
+import { IMeta } from "@/types";
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -17,11 +18,13 @@ const tourApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.myTrips],
     }),
     getMyTrip: build.query({
-      query: () => {
-        return {
-          url: "/trips/my-trips",
-          method: "GET",
-        };
+      query: (arg: Record<string, any>) => ({
+        url: "/trips/my-trips",
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response: { data: any; meta: IMeta }) => {
+        return response;
       },
       providesTags: [tagTypes.myTrips],
     }),
@@ -37,4 +40,8 @@ const tourApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateTourMutation, useGetMyTripQuery,useDeleteMyTripMutation } = tourApi;
+export const {
+  useCreateTourMutation,
+  useGetMyTripQuery,
+  useDeleteMyTripMutation,
+} = tourApi;

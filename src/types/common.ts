@@ -27,6 +27,7 @@ export type IGenericErrorMessage = {
   message: string;
 };
 
+
 export type IGenericErrorResponse = {
   statusCode: number;
   message: string;

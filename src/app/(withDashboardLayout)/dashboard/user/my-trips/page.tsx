@@ -3,6 +3,7 @@ import {
   useDeleteMyTripMutation,
   useGetMyTripQuery,
 } from "@/redux/api/tourApi";
+import { useDebounced } from "@/redux/hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -20,15 +21,21 @@ import { toast } from "sonner";
 import DeleteTripModal from "./components/DeleteTripModal";
 
 const MyTrip = () => {
-  const { data, isLoading } = useGetMyTripQuery("");
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data, isLoading } = useGetMyTripQuery({ ...query });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   const [deleteMyTrip] = useDeleteMyTripMutation();
-
-  const handleEdit = (id: string) => {
-    // Implement edit functionality
-    console.log("Edit", id);
-  };
+  
 
   const handleDelete = (id: string) => {
     setSelectedTripId(id);
@@ -92,7 +99,6 @@ const MyTrip = () => {
             sx={{
               color: "primary.main",
             }}
-            onClick={() => handleEdit(String(params.id))}
           >
             <EditIcon />
           </IconButton>
@@ -116,7 +122,11 @@ const MyTrip = () => {
         justifyContent={"flex-end"}
         alignItems={"center"}
       >
-        <TextField size="medium" placeholder="Search Trips" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="medium"
+          placeholder="Search Trips"
+        />
       </Stack>
       <Typography
         color={"primary.main"}
