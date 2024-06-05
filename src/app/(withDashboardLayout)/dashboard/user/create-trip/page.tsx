@@ -62,7 +62,6 @@ const TripForm = () => {
       photos: photos.split(",").map((photo) => photo.trim()),
     };
     try {
-      console.log(formattedData);
       const res = await createTour(formattedData).unwrap();
       if (res?.id) {
         toast.success("Tour Created Successfully");

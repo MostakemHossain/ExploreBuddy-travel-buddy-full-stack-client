@@ -1,3 +1,4 @@
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 const tourApi = baseApi.injectEndpoints({
@@ -13,8 +14,18 @@ const tourApi = baseApi.injectEndpoints({
           data,
         };
       },
+      invalidatesTags: [tagTypes.myTrips],
+    }),
+    getMyTrip: build.query({
+      query: () => {
+        return {
+          url: "/trips/my-trips",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.myTrips],
     }),
   }),
 });
 
-export const { useCreateTourMutation } = tourApi;
+export const { useCreateTourMutation, useGetMyTripQuery } = tourApi;
