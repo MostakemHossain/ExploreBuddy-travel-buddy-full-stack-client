@@ -1,4 +1,6 @@
 "use client";
+import ExploreBuddyDatePicker from "@/components/Forms/ExploreBuddyDatePicker";
+import { dateFormatter } from "@/utils/dateFormatter";
 import {
   Box,
   Button,
@@ -11,8 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 
 const TripForm = () => {
+  const methods = useForm(); // Initialize useForm
+
   const [formData, setFormData] = useState({
     destination: "",
     detailedDescription: "",
@@ -25,155 +30,162 @@ const TripForm = () => {
     photos: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleChange = (e:FieldValues) => {
+    if (e.target) {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else {
+      // If directly passed value (from ExploreBuddyDatePicker)
+      const { name, value } = e;
+      setFormData({
+        ...formData,
+        [name]: value ? value.toISOString().split("T")[0] : "", // Convert date to ISO string and extract date part
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FieldValues) => {
     e.preventDefault();
-    const { activities, itinerary, photos } = formData;
+    const { activities, itinerary, photos,startDate,endDate } = formData;
     const formattedData = {
       ...formData,
+      startDate:dateFormatter(startDate),
+      endDate:dateFormatter(endDate),
       budget: parseFloat(formData.budget),
       activities: activities.split(",").map((activity) => activity.trim()),
       itinerary: itinerary.split("\n").map((day) => day.trim()),
       photos: photos.split(",").map((photo) => photo.trim()),
     };
     console.log("Formatted JSON:", formattedData);
+    // You may want to add logic here to submit the data to your backend
+    // and handle any success or error cases accordingly.
+    // After successful submission, you can reset the form.
+    methods.reset();
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Create Trip
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Destination"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              required
-            />
+    <FormProvider {...methods}>
+      <Container>
+        <Typography variant="h4" gutterBottom>
+          Create Trip
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Destination"
+                name="destination"
+                value={formData.destination}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Detailed Description"
+                name="detailedDescription"
+                multiline
+                rows={4}
+                value={formData.detailedDescription}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <ExploreBuddyDatePicker
+                label="Start Date"
+                name="startDate"
+                onChange={(value) =>
+                  handleChange({ target: { name: "startDate", value } })
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <ExploreBuddyDatePicker
+                label="End Date"
+                name="endDate"
+                onChange={(value) =>
+                  handleChange({ target: { name: "endDate", value } })
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Budget"
+                name="budget"
+                type="number"
+                value={formData.budget}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Activities (comma-separated)"
+                name="activities"
+                value={formData.activities}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Itinerary (one per line)"
+                name="itinerary"
+                multiline
+                rows={4}
+                value={formData.itinerary}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel id="travelType-label">Travel Type</InputLabel>
+              <Select
+                fullWidth
+                labelId="travelType-label"
+                name="travelType"
+                value={formData.travelType}
+                onChange={handleChange}
+                required
+              >
+                <MenuItem value="">Select Travel Type</MenuItem>
+                <MenuItem value="Adventure">Adventure</MenuItem>
+                <MenuItem value="Leisure">Leisure</MenuItem>
+                <MenuItem value="Business">Business</MenuItem>
+                <MenuItem value="Couple">Couple</MenuItem>
+                <MenuItem value="Others">Others</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Photos (comma-separated)"
+                name="photos"
+                value={formData.photos}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Box textAlign="center">
+                <Button variant="contained" color="primary" type="submit">
+                  Submit
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Detailed Description"
-              name="detailedDescription"
-              multiline
-              rows={4}
-              value={formData.detailedDescription}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Start Date"
-              name="startDate"
-              type="date"
-              value={formData.startDate}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              required
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="End Date"
-              name="endDate"
-              type="date"
-              value={formData.endDate}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Budget"
-              name="budget"
-              type="number"
-              value={formData.budget}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Activities (comma-separated)"
-              name="activities"
-              value={formData.activities}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Itinerary (one per line)"
-              name="itinerary"
-              multiline
-              rows={4}
-              value={formData.itinerary}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <InputLabel id="travelType-label">Travel Type</InputLabel>
-            <Select
-              fullWidth
-              labelId="travelType-label"
-              name="travelType"
-              value={formData.travelType}
-              onChange={handleChange}
-              required
-            >
-              <MenuItem value="">Select Travel Type</MenuItem>
-              <MenuItem value="Adventure">Adventure</MenuItem>
-              <MenuItem value="Leisure">Leisure</MenuItem>
-              <MenuItem value="Business">Business</MenuItem>
-              <MenuItem value="Business">Couple</MenuItem>
-              <MenuItem value="Business">Others</MenuItem>
-            </Select>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Photos (comma-separated)"
-              name="photos"
-              value={formData.photos}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Box textAlign="center">
-              <Button variant="contained" color="primary" type="submit">
-                Submit
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </form>
-    </Container>
+        </form>
+      </Container>
+    </FormProvider>
   );
 };
 
