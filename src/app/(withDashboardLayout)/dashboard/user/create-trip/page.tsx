@@ -30,7 +30,7 @@ const TripForm = () => {
     photos: "",
   });
 
-  const handleChange = (e:FieldValues) => {
+  const handleChange = (e: FieldValues) => {
     if (e.target) {
       const { name, value } = e.target;
       setFormData({
@@ -38,38 +38,35 @@ const TripForm = () => {
         [name]: value,
       });
     } else {
-      // If directly passed value (from ExploreBuddyDatePicker)
       const { name, value } = e;
       setFormData({
         ...formData,
-        [name]: value ? value.toISOString().split("T")[0] : "", // Convert date to ISO string and extract date part
+        [name]: value ? value.toISOString().split("T")[0] : "",
       });
     }
   };
 
   const handleSubmit = (e: FieldValues) => {
     e.preventDefault();
-    const { activities, itinerary, photos,startDate,endDate } = formData;
+    const { activities, itinerary, photos, startDate, endDate } = formData;
     const formattedData = {
       ...formData,
-      startDate:dateFormatter(startDate),
-      endDate:dateFormatter(endDate),
+      startDate: dateFormatter(startDate),
+      endDate: dateFormatter(endDate),
       budget: parseFloat(formData.budget),
       activities: activities.split(",").map((activity) => activity.trim()),
       itinerary: itinerary.split("\n").map((day) => day.trim()),
       photos: photos.split(",").map((photo) => photo.trim()),
     };
     console.log("Formatted JSON:", formattedData);
-    // You may want to add logic here to submit the data to your backend
-    // and handle any success or error cases accordingly.
-    // After successful submission, you can reset the form.
+
     methods.reset();
   };
 
   return (
     <FormProvider {...methods}>
       <Container>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h3" color={"primary.main"} gutterBottom>
           Create Trip
         </Typography>
         <form onSubmit={handleSubmit}>

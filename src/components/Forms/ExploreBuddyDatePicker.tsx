@@ -12,7 +12,7 @@ interface IDatePicker {
   required?: boolean;
   fullWidth?: boolean;
   sx?: SxProps;
-  onChange: (value: any) => void; // Add onChange prop type
+  onChange: (value: any) => void; 
 }
 
 const ExploreBuddyDatePicker = ({
@@ -29,7 +29,7 @@ const ExploreBuddyDatePicker = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={null} // Change defaultValue to null
+        defaultValue={null} 
         render={({ field }) => (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
@@ -38,10 +38,10 @@ const ExploreBuddyDatePicker = ({
               disablePast
               {...field}
               onChange={(date) => {
-                field.onChange(date); // Update to field.onChange
+                field.onChange(date); 
                 onChange(date);
               }}
-              value={field.value || null} // Update to field.value
+              value={field.value || null}
               slotProps={{
                 textField: {
                   required: required,
