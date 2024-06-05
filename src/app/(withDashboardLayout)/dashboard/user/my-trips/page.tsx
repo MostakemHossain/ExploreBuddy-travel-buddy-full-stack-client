@@ -35,7 +35,6 @@ const MyTrip = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   const [deleteMyTrip] = useDeleteMyTripMutation();
-  
 
   const handleDelete = (id: string) => {
     setSelectedTripId(id);
@@ -147,6 +146,7 @@ const MyTrip = () => {
         <Box>
           <Typography color={"primary.main"} variant="h4" fontWeight={600}>
             <DataGrid
+              //@ts-ignore
               rows={data}
               rowHeight={100}
               columns={columns}

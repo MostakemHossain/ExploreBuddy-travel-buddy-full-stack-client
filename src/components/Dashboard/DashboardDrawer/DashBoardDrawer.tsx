@@ -1,5 +1,8 @@
 "use client";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { Avatar, Badge, LinearProgress, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import AccountMenu from "../AccountMenu/AccountMent";
 import Sidebar from "../Sidebar/Sidebar";
 
 const drawerWidth = 240;
@@ -34,6 +38,7 @@ export default function DashBoardDrawer({
       setMobileOpen(!mobileOpen);
     }
   };
+  const { data, isLoading } = useGetMyProfileQuery({});
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -58,19 +63,44 @@ export default function DashBoardDrawer({
           >
             <MenuIcon />
           </IconButton>
-          <Box>
-            <Typography variant="body2" noWrap component="div" color="gray">
-              hi, Mostakem Hossain
-            </Typography>
-            <Typography
-              variant="body2"
-              noWrap
-              component="div"
-              color="primary.main"
-              fontWeight={600}
-            >
-              Welcome to Explore Buddy!
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography variant="body2" noWrap component="div" color="gray">
+                hi,{" "}
+                {isLoading ? (
+                  <Box sx={{ width: "20%" }}>
+                    <LinearProgress />
+                  </Box>
+                ) : (
+                  data && data.name
+                )}
+              </Typography>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                color="primary.main"
+                fontWeight={600}
+              >
+                Welcome to Explore Buddy!
+              </Typography>
+            </Box>
+            <Stack direction={"row"} gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon />
+                </IconButton>
+              </Badge>
+              <Avatar alt={data?.name} src={data?.profilePhoto} />
+              <AccountMenu />
+            </Stack>
           </Box>
         </Toolbar>
       </AppBar>

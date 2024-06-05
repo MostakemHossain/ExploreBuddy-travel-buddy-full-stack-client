@@ -1,4 +1,5 @@
 import { IMeta } from "@/types";
+import { Trip } from "@/types/tour/tour";
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -23,7 +24,7 @@ const tourApi = baseApi.injectEndpoints({
         method: "GET",
         params: arg,
       }),
-      transformResponse: (response: { data: any; meta: IMeta }) => {
+      transformResponse: (response: { data: Trip[]; meta: IMeta }) => {
         return response;
       },
       providesTags: [tagTypes.myTrips],
