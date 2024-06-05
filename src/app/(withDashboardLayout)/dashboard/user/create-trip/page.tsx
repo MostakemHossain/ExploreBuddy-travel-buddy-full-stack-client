@@ -1,5 +1,6 @@
 "use client";
 import ExploreBuddyDatePicker from "@/components/Forms/ExploreBuddyDatePicker";
+import { useCreateTourMutation } from "@/redux/api/tourApi";
 import { dateFormatter } from "@/utils/dateFormatter";
 import {
   Box,
@@ -14,13 +15,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const TripForm = () => {
-  const methods = useForm(); // Initialize useForm
+  const methods = useForm();
 
   const [formData, setFormData] = useState({
     destination: "",
-    detailedDescription: "",
+    description: "",
     startDate: "",
     endDate: "",
     budget: "",
@@ -45,8 +47,9 @@ const TripForm = () => {
       });
     }
   };
+  const [createTour] = useCreateTourMutation();
 
-  const handleSubmit = (e: FieldValues) => {
+  const handleSubmit = async (e: FieldValues) => {
     e.preventDefault();
     const { activities, itinerary, photos, startDate, endDate } = formData;
     const formattedData = {
@@ -58,7 +61,26 @@ const TripForm = () => {
       itinerary: itinerary.split("\n").map((day) => day.trim()),
       photos: photos.split(",").map((photo) => photo.trim()),
     };
-    console.log("Formatted JSON:", formattedData);
+    try {
+      console.log(formattedData);
+      const res = await createTour(formattedData).unwrap();
+      if (res?.id) {
+        toast.success("Tour Created Successfully");
+        setFormData({
+          destination: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          budget: "",
+          activities: "",
+          itinerary: "",
+          travelType: "",
+          photos: "",
+        });
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
 
     methods.reset();
   };
@@ -85,10 +107,10 @@ const TripForm = () => {
               <TextField
                 fullWidth
                 label="Detailed Description"
-                name="detailedDescription"
+                name="description"
                 multiline
                 rows={4}
-                value={formData.detailedDescription}
+                value={formData.description}
                 onChange={handleChange}
                 required
               />
