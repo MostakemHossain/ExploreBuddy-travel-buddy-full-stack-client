@@ -1,4 +1,5 @@
 import { authKey } from "@/constants/authKey";
+import { instance as axiosInstance } from "@/helpers/axios/axiosInstance";
 import { decodeToken } from "@/utils/jwt-decode";
 import {
   getFormLocalStorage,
@@ -11,15 +12,15 @@ export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
 };
 
 export const getUserInfo = () => {
-    const authToken = getFormLocalStorage(authKey);
-    if (authToken) {
-      const decodeData: any = decodeToken(authToken);
-      return {
-        ...decodeData,
-        role: decodeData.role.toLowerCase(),
-      };
-    }
-  };
+  const authToken = getFormLocalStorage(authKey);
+  if (authToken) {
+    const decodeData: any = decodeToken(authToken);
+    return {
+      ...decodeData,
+      role: decodeData.role.toLowerCase(),
+    };
+  }
+};
 export const isLoggedIn = () => {
   const authToken = getFormLocalStorage(authKey);
   if (authToken) {
@@ -29,4 +30,15 @@ export const isLoggedIn = () => {
 
 export const removeUser = () => {
   return removeFormLocalStorage(authKey);
+};
+
+export const getNewAccessToken = async () => {
+  return await axiosInstance({
+    url: "http://localhost:8000/api/refresh-token",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  });
 };
