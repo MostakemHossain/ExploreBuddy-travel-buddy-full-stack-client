@@ -29,6 +29,24 @@ const tourApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.myTrips],
     }),
+    getTrip: build.query({
+      query: (id: string | string[] | undefined) => ({
+        url: `/trips/my-trips/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.myTrips],
+    }),
+    updateMyTrip: build.mutation({
+      query: ({ id, ...data }) => {
+        return {
+          url: `/trips/my-trips/${id}`,
+          method: "PATCH",
+          data,
+        };
+      },
+      invalidatesTags: [tagTypes.myTrips],
+    }),
+
     deleteMyTrip: build.mutation({
       query: (id) => {
         return {
@@ -45,4 +63,6 @@ export const {
   useCreateTourMutation,
   useGetMyTripQuery,
   useDeleteMyTripMutation,
+  useGetTripQuery,
+  useUpdateMyTripMutation,
 } = tourApi;

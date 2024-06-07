@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import DeleteTripModal from "./components/DeleteTripModal";
@@ -94,13 +95,15 @@ const MyTrip = () => {
           alignItems="center"
           style={{ width: "100%", marginTop: 25 }}
         >
-          <IconButton
-            sx={{
-              color: "primary.main",
-            }}
-          >
-            <EditIcon />
-          </IconButton>
+          <Link href={`/dashboard/user/my-trips/${params.id}`}>
+            <IconButton
+              sx={{
+                color: "primary.main",
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Link>
           <IconButton
             sx={{
               color: "red",
