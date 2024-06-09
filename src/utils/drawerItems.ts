@@ -1,12 +1,20 @@
 import { userRole } from "@/constants/role";
 import { DrawerItem, UserRole } from "@/types";
 import BackpackIcon from "@mui/icons-material/Backpack";
+import CardTravelIcon from "@mui/icons-material/CardTravel";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import CardTravelIcon from "@mui/icons-material/CardTravel";
+import PersonIcon from "@mui/icons-material/Person";
 
 export const drawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
+  const defaultMenus = [
+    {
+      title: "profile",
+      path: `${role}/profile`,
+      icon: PersonIcon,
+    },
+  ];
   switch (role) {
     case userRole.ADMIN:
       roleMenus.push(
@@ -47,5 +55,5 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
       break;
   }
 
-  return [...roleMenus];
+  return [...roleMenus, ...defaultMenus];
 };
