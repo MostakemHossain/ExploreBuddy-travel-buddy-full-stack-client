@@ -36,6 +36,7 @@ const ExploreBuddyInput = ({
           required
           label={label}
           size={size}
+          type={type}
           placeholder={label}
           fullWidth={fullWidth}
         />
