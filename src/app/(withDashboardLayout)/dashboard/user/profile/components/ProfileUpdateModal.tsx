@@ -24,10 +24,13 @@ const ProfileUpdateModal = ({ open, setOpen, id }: IProps) => {
     const formData = new FormData();
     formData.append("data", JSON.stringify(values));
     try {
-      const res = await updateMyProfile(formData).unwrap();
+      const res = await updateMyProfile(formData);
       setOpen(false);
-      if (res.id) {
-        toast("Profile Information Updated Successfully");
+      if (res.data?.id) {
+        toast.success("Profile Information Updated Successfully");
+        
+      } else {
+        toast.error("This requested user is Already Registered");
       }
     } catch (error: any) {
       console.log(error.message);
