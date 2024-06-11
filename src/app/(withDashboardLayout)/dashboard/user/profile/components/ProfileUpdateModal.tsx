@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type IProps = {
   open: boolean;
@@ -23,8 +24,11 @@ const ProfileUpdateModal = ({ open, setOpen, id }: IProps) => {
     const formData = new FormData();
     formData.append("data", JSON.stringify(values));
     try {
-      const res = await updateMyProfile(formData);
-      console.log(res);
+      const res = await updateMyProfile(formData).unwrap();
+      setOpen(false);
+      if (res.id) {
+        toast("Profile Information Updated Successfully");
+      }
     } catch (error: any) {
       console.log(error.message);
     }
