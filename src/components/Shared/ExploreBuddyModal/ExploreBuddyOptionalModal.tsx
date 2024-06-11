@@ -1,8 +1,6 @@
 "use client";
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
@@ -23,16 +21,14 @@ type TProps = {
   title: string;
   children?: React.ReactNode;
   sx?: SxProps;
-  buttonTittle?: string;
 };
 
-export default function ExploreBuddyModal({
+export default function ExploreBuddyOptionalModal({
   open = false,
   setOpen,
   children,
   title = "",
   sx,
-  buttonTittle = "Save Changes",
 }: TProps) {
   const handleClose = () => {
     setOpen(false);
@@ -65,11 +61,6 @@ export default function ExploreBuddyModal({
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            {buttonTittle}
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </React.Fragment>
   );
