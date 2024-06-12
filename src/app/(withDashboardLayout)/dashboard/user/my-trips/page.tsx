@@ -1,5 +1,6 @@
 "use client";
 import {
+  useCreateTravelBuddyRequestMutation,
   useDeleteMyTripMutation,
   useGetMyTripQuery,
 } from "@/redux/api/tourApi";
@@ -8,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
+  Button,
   IconButton,
   Skeleton,
   Stack,
@@ -20,6 +22,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import DeleteTripModal from "./components/DeleteTripModal";
+import RequestTripModal from "./components/RequestTripModal";
 
 const MyTrip = () => {
   const query: Record<string, any> = {};
@@ -34,8 +37,12 @@ const MyTrip = () => {
 
   const { data, isLoading } = useGetMyTripQuery({ ...query });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isRequestModalOpen, setRequestIsModalOpen] = useState<boolean>(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [requestedTrips, setRequestedTrips] = useState<string[]>([]);
   const [deleteMyTrip] = useDeleteMyTripMutation();
+  const [createTravelBuddyRequest] = useCreateTravelBuddyRequestMutation();
 
   const handleDelete = (id: string) => {
     setSelectedTripId(id);
@@ -54,6 +61,33 @@ const MyTrip = () => {
       } finally {
         setIsModalOpen(false);
         setSelectedTripId(null);
+      }
+    }
+  };
+
+  const handleRequestTrip = (id: string, userId: string) => {
+    setSelectedTripId(id);
+    setSelectedUserId(userId);
+    setRequestIsModalOpen(true);
+  };
+
+  const confirmRequestTrip = async () => {
+    if (selectedTripId && selectedUserId) {
+      try {
+        const res = await createTravelBuddyRequest({
+          id: selectedTripId,
+          data: { userId: selectedUserId },
+        }).unwrap();
+        if (res.id) {
+          setRequestedTrips([...requestedTrips, selectedTripId]);
+          toast.success("Trip Requested Successfully");
+        }
+      } catch (error: any) {
+        console.error(error.message);
+      } finally {
+        setRequestIsModalOpen(false);
+        setSelectedTripId(null);
+        setSelectedUserId(null);
       }
     }
   };
@@ -85,6 +119,34 @@ const MyTrip = () => {
     { field: "startDate", headerName: "Start Date", flex: 1 },
     { field: "endDate", headerName: "End Date", flex: 1 },
     {
+      field: "userId",
+      headerName: "Request Trip",
+      flex: 1,
+      renderCell: (params) => {
+        const tripStatus = params.row.status;
+        const isRequested = requestedTrips.includes(String(params.id));
+        const isDisabled = tripStatus || isRequested;
+
+        return (
+          <Box
+            textAlign="center"
+            sx={{
+              mr: 15,
+            }}
+          >
+            <Button
+              onClick={() =>
+                handleRequestTrip(String(params.id), String(params.row.userId))
+              }
+              disabled={isDisabled}
+            >
+              {isDisabled ? "Requested" : "Request Trip"}
+            </Button>
+          </Box>
+        );
+      },
+    },
+    {
       field: "actions",
       headerName: "Actions",
       renderCell: (params) => (
@@ -92,8 +154,7 @@ const MyTrip = () => {
           direction="row"
           spacing={1}
           justifyContent="center"
-          alignItems="center"
-          style={{ width: "100%", marginTop: 25 }}
+          style={{ width: "100%", marginTop: 1 }}
         >
           <Link href={`/dashboard/user/my-trips/${params.id}`}>
             <IconButton
@@ -144,6 +205,11 @@ const MyTrip = () => {
         open={isModalOpen}
         setOpen={setIsModalOpen}
         onConfirm={confirmDelete}
+      />
+      <RequestTripModal
+        open={isRequestModalOpen}
+        setOpen={setRequestIsModalOpen}
+        onConfirm={confirmRequestTrip}
       />
       {!isLoading ? (
         <Box>

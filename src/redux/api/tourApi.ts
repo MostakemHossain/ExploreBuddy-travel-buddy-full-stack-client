@@ -46,6 +46,19 @@ const tourApi = baseApi.injectEndpoints({
       },
       invalidatesTags: [tagTypes.myTrips],
     }),
+    createTravelBuddyRequest: build.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/trip/${id}/request`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data,
+        };
+      },
+      invalidatesTags: [tagTypes.myTrips],
+    }),
 
     deleteMyTrip: build.mutation({
       query: (id) => {
@@ -65,4 +78,5 @@ export const {
   useDeleteMyTripMutation,
   useGetTripQuery,
   useUpdateMyTripMutation,
+  useCreateTravelBuddyRequestMutation,
 } = tourApi;

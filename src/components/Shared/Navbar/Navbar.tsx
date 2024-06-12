@@ -1,5 +1,5 @@
 "use client";
-import AuthButton from "@/components/UI/AuthButton/AuthButton";
+import ToggleSwitch from "@/components/ToggleButton/ToggleButton";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -40,7 +40,16 @@ const Navbar = () => {
             Dashboard
           </Typography>
         </Stack>
-        <AuthButton />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ToggleSwitch />
+          <AuthButton />
+        </Box>
       </Stack>
     </Container>
   );
