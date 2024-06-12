@@ -1,9 +1,12 @@
 "use client";
-import { useGetAllUsersQuery } from "@/redux/api/manageUserApi";
+import {
+  useGetAllUsersQuery,
+  useUpdateUsersMutation,
+} from "@/redux/api/manageUserApi";
 import {
   Box,
+  Button,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   Skeleton,
@@ -13,13 +16,14 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type User = {
   id: string;
   name: string;
   email: string;
-  role: "USER" | "ADMIN" | "SUPER-ADMIN";
-  status: "ACTIVE" | "INACTIVE";
+  role: "USER" | "ADMIN" | "SUPER_ADMIN";
+  status: "ACTIVE" | "BLOCKED";
   isDeleted: boolean;
 };
 
@@ -32,8 +36,9 @@ type Changes = {
 };
 
 const ManageUsers = () => {
-  const { data, isLoading } = useGetAllUsersQuery("");
+  const { data, isLoading: isLoadingUsers } = useGetAllUsersQuery("");
   const [changes, setChanges] = useState<Changes>({});
+  const [updateUsers, { isLoading: isUpdating }] = useUpdateUsersMutation();
 
   const handleChange = (
     id: GridRowId,
@@ -47,6 +52,22 @@ const ManageUsers = () => {
         [field]: value,
       },
     }));
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      for (const id in changes) {
+        const change = changes[id];
+        const res = await updateUsers({ id, ...change }).unwrap();
+        if (res.id) {
+          toast.success("User Updated Successfull");
+        }
+      }
+
+      setChanges({});
+    } catch (error) {
+      console.error("Failed to update users:", error);
+    }
   };
 
   const columns: GridColDef[] = [
@@ -80,7 +101,7 @@ const ManageUsers = () => {
             >
               <MenuItem value="USER">USER</MenuItem>
               <MenuItem value="ADMIN">ADMIN</MenuItem>
-              <MenuItem value="SUPER-ADMIN">SUPER-ADMIN</MenuItem>
+              <MenuItem value="SUPER_ADMIN">SUPER_ADMIN</MenuItem>
             </Select>
           </FormControl>
         );
@@ -111,7 +132,7 @@ const ManageUsers = () => {
               }}
             >
               <MenuItem value="ACTIVE">ACTIVE</MenuItem>
-              <MenuItem value="INACTIVE">INACTIVE</MenuItem>
+              <MenuItem value="BLOCKED">BLOCKED</MenuItem>
             </Select>
           </FormControl>
         );
@@ -175,7 +196,7 @@ const ManageUsers = () => {
         Manage Users
       </Typography>
 
-      {!isLoading ? (
+      {!isLoadingUsers ? (
         <Box
           sx={{ backgroundColor: "#fff", borderRadius: 2, p: 2, boxShadow: 3 }}
         >
@@ -220,6 +241,16 @@ const ManageUsers = () => {
           <Skeleton animation={false} />
         </Box>
       )}
+      <Stack direction={"row"} justifyContent={"flex-end"} sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSaveChanges}
+          disabled={isUpdating}
+        >
+          {isUpdating ? "Saving..." : "Save Changes"}
+        </Button>
+      </Stack>
     </Box>
   );
 };

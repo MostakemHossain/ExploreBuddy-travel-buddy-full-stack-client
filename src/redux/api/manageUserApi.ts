@@ -11,7 +11,14 @@ const myProfileApi = baseApi.injectEndpoints({
 
       providesTags: [tagTypes.manageUser],
     }),
+    updateUsers: build.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/user/update-role-status/${id}`,
+        method: "PATCH",
+        data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery } = myProfileApi;
+export const { useGetAllUsersQuery, useUpdateUsersMutation } = myProfileApi;
