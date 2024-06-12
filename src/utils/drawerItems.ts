@@ -4,6 +4,7 @@ import BackpackIcon from "@mui/icons-material/Backpack";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import KeyIcon from "@mui/icons-material/Key";
+import LuggageIcon from "@mui/icons-material/Luggage";
 import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
 
@@ -53,6 +54,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           title: "My-trip",
           path: `${role}/my-trips`,
           icon: CardTravelIcon,
+        },
+        {
+          title: "My-Travel-Request",
+          path: `${role}/my-travel-request`,
+          icon: LuggageIcon,
         }
       );
       break;
