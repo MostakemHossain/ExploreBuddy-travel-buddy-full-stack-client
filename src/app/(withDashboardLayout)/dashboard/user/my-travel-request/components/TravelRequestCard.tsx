@@ -60,7 +60,9 @@ export function TravelRequestCard({ trip }: TProps) {
           justifyContent: "space-between",
         }}
       >
-        <Typography style={statusStyle}>{trip.status}</Typography>
+        <Typography fontWeight={600} style={statusStyle}>
+          {trip.status}
+        </Typography>
         <Button size="small">View Details</Button>
       </CardActions>
     </Card>
