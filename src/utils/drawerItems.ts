@@ -3,6 +3,7 @@ import { DrawerItem, UserRole } from "@/types";
 import BackpackIcon from "@mui/icons-material/Backpack";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import ExploreIcon from "@mui/icons-material/Explore";
 import KeyIcon from "@mui/icons-material/Key";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PeopleIcon from "@mui/icons-material/People";
@@ -34,6 +35,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           title: "Manage Users",
           path: `${role}/manage-users`,
           icon: PeopleIcon,
+        },
+        {
+          title: "Requested Travel Buddy",
+          path: `${role}/requested-travel-buddy`,
+          icon: ExploreIcon,
         }
       );
       break;
