@@ -15,7 +15,6 @@ export default function TravelRequest() {
   } = useGetTripRequestQuery(profileData?.id, {
     skip: !profileData?.id,
   });
-  console.log(tripData);
 
   if (profileLoading) {
     return (
