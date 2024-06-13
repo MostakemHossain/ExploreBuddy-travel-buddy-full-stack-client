@@ -8,7 +8,6 @@ import { TravelRequestCard } from "./components/TravelRequestCard";
 export default function TravelRequest() {
   const { data: profileData, isLoading: profileLoading } =
     useGetMyProfileQuery("");
-
   const {
     data: tripData,
     isLoading: tripLoading,
@@ -16,6 +15,7 @@ export default function TravelRequest() {
   } = useGetTripRequestQuery(profileData?.id, {
     skip: !profileData?.id,
   });
+  console.log(tripData);
 
   if (profileLoading) {
     return (

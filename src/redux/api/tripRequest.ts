@@ -17,8 +17,18 @@ const tripRequestApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.tripRequest],
     }),
+    updateSpecificTripRequest: build.mutation({
+      query: ({ id, newStatus }) => ({
+        url: `/trip/travel-buddies/${id}/respond`,
+        method: "PATCH",
+        data: { newStatus },
+      }),
+    }),
   }),
 });
 
-export const { useGetTripRequestQuery, useGetALLTripRequestQuery } =
-  tripRequestApi;
+export const {
+  useGetTripRequestQuery,
+  useGetALLTripRequestQuery,
+  useUpdateSpecificTripRequestMutation,
+} = tripRequestApi;

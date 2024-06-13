@@ -1,28 +1,72 @@
 "use client";
-import { useGetALLTripRequestQuery } from "@/redux/api/tripRequest";
-import { Box, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import {
+  useGetALLTripRequestQuery,
+  useUpdateSpecificTripRequestMutation,
+} from "@/redux/api/tripRequest";
+import {
+  Box,
+  MenuItem,
+  Select,
+  Skeleton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const RequestedTravelBuddy = () => {
   const { data, isLoading } = useGetALLTripRequestQuery("");
+  const [updateSpecificTripRequest, { isLoading: updateStatusLoading }] =
+    useUpdateSpecificTripRequestMutation();
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 5,
   });
 
-  const rows = useMemo(() => {
-    if (!data) return [];
-    return data.map((item: any, index: number) => ({
-      id: index,
-      destination: item.trip.destination,
-      budget: item.trip.budget,
-      startDate: item.trip.startDate,
-      endDate: item.trip.endDate,
-      status: item.status,
-    }));
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      const initialRows = data.map((item: any) => ({
+        id: item.id.toString(), // Use the actual backend ID
+        destination: item.trip.destination,
+        budget: item.trip.budget,
+        startDate: item.trip.startDate,
+        endDate: item.trip.endDate,
+        status: item.status,
+      }));
+      setRows(initialRows);
+    }
   }, [data]);
+
+  const handleStatusChange = async (event: any, id: string) => {
+    const newStatus = event.target.value;
+    setRows((prevRows: any) =>
+      prevRows.map((row: any) =>
+        row.id === id ? { ...row, status: newStatus } : row
+      )
+    );
+
+    try {
+      const res = await updateSpecificTripRequest({ id, newStatus }).unwrap();
+      if (res.id) {
+        toast.success("Travel Requested Updated Successfully");
+      }
+    } catch (error) {
+      console.error("Failed to save status change:", error);
+      // Optionally revert status change on failure
+      setRows((prevRows: any) =>
+        prevRows.map((row: any) =>
+          row.id === id
+            ? { ...row, status: prevRows.find((r: any) => r.id === id).status }
+            : row
+        )
+      );
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -34,7 +78,23 @@ const RequestedTravelBuddy = () => {
     { field: "budget", headerName: "Budget", flex: 1, sortable: true },
     { field: "startDate", headerName: "Start Date", flex: 1, sortable: true },
     { field: "endDate", headerName: "End Date", flex: 1, sortable: true },
-    { field: "status", headerName: "Status", flex: 1, sortable: true },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      sortable: true,
+      renderCell: (params) => (
+        <Select
+          value={params.value}
+          onChange={(event) => handleStatusChange(event, params.id.toString())}
+          fullWidth
+        >
+          <MenuItem value="PENDING">PENDING</MenuItem>
+          <MenuItem value="APPROVED">APPROVED</MenuItem>
+          <MenuItem value="REJECTED">REJECTED</MenuItem>
+        </Select>
+      ),
+    },
   ];
 
   return (
