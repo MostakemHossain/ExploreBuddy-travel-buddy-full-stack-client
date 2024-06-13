@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 type TProps = {
   trip: any;
@@ -17,6 +18,7 @@ type TProps = {
 
 const TravelCard = ({ trip }: TProps) => {
   const truncatedDescription = trip.trip.description.slice(0, 65) + ".....";
+  console.log(trip.id);
 
   return (
     <Card
@@ -86,9 +88,11 @@ const TravelCard = ({ trip }: TProps) => {
           alignItems="center"
           mt={2}
         >
-          <Button variant="contained" color="primary">
-            Details
-          </Button>
+          <Link href={trip.trip.id}>
+            <Button variant="contained" color="primary">
+              Details
+            </Button>
+          </Link>
           <Typography variant="h6" fontWeight={600}>
             {trip.trip.budget}$
           </Typography>
