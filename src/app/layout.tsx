@@ -1,7 +1,6 @@
 import Providers from "@/lib/Providers/Providers";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "sonner";
@@ -20,13 +19,13 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body >
+        <body>
           <AppRouterCacheProvider>
             <>
               <Toaster position="top-center" />
               {children}
             </>
-          </AppRouterCacheProvider>
+        </AppRouterCacheProvider>
         </body>
       </html>
     </Providers>

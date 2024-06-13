@@ -17,6 +17,13 @@ const tripRequestApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.tripRequest],
     }),
+    getALLApprovalTripRequest: build.query({
+      query: () => ({
+        url: `/trip/travel-request/approval`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.tripRequest],
+    }),
     updateSpecificTripRequest: build.mutation({
       query: ({ id, newStatus }) => ({
         url: `/trip/travel-buddies/${id}/respond`,
@@ -31,4 +38,5 @@ export const {
   useGetTripRequestQuery,
   useGetALLTripRequestQuery,
   useUpdateSpecificTripRequestMutation,
+  useGetALLApprovalTripRequestQuery,
 } = tripRequestApi;
