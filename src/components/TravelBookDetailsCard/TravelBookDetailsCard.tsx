@@ -18,14 +18,12 @@ type TProps = {
 
 const TravelCard = ({ trip }: TProps) => {
   const truncatedDescription = trip.trip.description.slice(0, 65) + ".....";
-  console.log(trip.id);
-
   return (
     <Card
       variant="outlined"
       sx={{
-        maxWidth: 345,
-        margin: "20px",
+        width: { xs: "100%", sm: "345px", md: "300px", lg: "345px" },
+        margin: { sm: "20px" },
         borderRadius: "10px",
         transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
         "&:hover": {
@@ -88,7 +86,7 @@ const TravelCard = ({ trip }: TProps) => {
           alignItems="center"
           mt={2}
         >
-          <Link href={trip.trip.id}>
+          <Link href={`/trip/${trip.trip.id}`} passHref>
             <Button variant="contained" color="primary">
               Details
             </Button>

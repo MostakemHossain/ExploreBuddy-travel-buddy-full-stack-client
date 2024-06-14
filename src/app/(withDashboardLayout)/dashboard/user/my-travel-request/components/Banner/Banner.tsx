@@ -2,17 +2,17 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 
 const Banner = () => {
   return (
-    <Box sx={{ marginLeft: 10, marginRight: 10 }}>
+    <Box>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "50px 20px",
-          background: "linear-gradient(to right, #dac7ad 0%, #fcb69f 100%)",
+          padding: { xs: "20px 10px", md: "50px 20px", lg: "50px" },
+          background: "linear-gradient(to right, #f2f4fc63 0%, #895645 100%)",
           borderRadius: "15px",
           boxShadow: "0px 4px 15px rgba(0,0,0,0.1)",
-          height: "100vh",
+          minHeight: "100vh",
         }}
       >
         <Grid container spacing={4} alignItems="center">
@@ -23,6 +23,7 @@ const Banner = () => {
                 component="h1"
                 fontWeight={600}
                 gutterBottom
+                sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
               >
                 Explore the World with Us...
               </Typography>
@@ -32,6 +33,7 @@ const Banner = () => {
                 color="secondary"
                 gutterBottom
                 fontWeight={600}
+                sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" } }}
               >
                 Discover Your Next Adventure and{" "}
                 <span style={{ color: "#ff5722" }}>
@@ -44,17 +46,26 @@ const Banner = () => {
                 fontWeight={600}
                 component="p"
                 gutterBottom
+                sx={{ fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" } }}
               >
                 Join our travel community and find the perfect destination that
                 matches your wanderlust. Enjoy a seamless travel experience with
                 curated trips designed for you. Start your journey to an
                 unforgettable adventure today...!
               </Typography>
-              <Box mt={4}>
+              <Box
+                mt={4}
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "center", sm: "flex-start" },
+                  gap: { xs: 2, sm: 0 },
+                }}
+              >
                 <Button
                   variant="contained"
                   color="primary"
-                  sx={{ margin: "0 10px" }}
+                  sx={{ margin: { sm: "0 10px 0 0" } }}
                 >
                   Book Your Trip
                 </Button>
@@ -62,7 +73,7 @@ const Banner = () => {
                   variant="outlined"
                   color="secondary"
                   sx={{
-                    margin: "0 10px",
+                    margin: { sm: "0 0 0 10px" },
                     "&:hover": {
                       backgroundColor: "primary.main",
                       color: "white",
@@ -110,6 +121,7 @@ const Banner = () => {
                   top: { xs: "auto", md: "-140px" },
                   right: { xs: "auto", md: "-70px" },
                   marginTop: { xs: 1, md: 0 },
+                  display: { xs: "none", md: "block" },
                 }}
               />
               <Box
@@ -125,6 +137,7 @@ const Banner = () => {
                   top: { xs: "auto", md: "-40px" },
                   right: { xs: "auto", md: "270px" },
                   marginTop: { xs: 1, md: 0 },
+                  display: { xs: "none", md: "block" },
                 }}
               />
             </Box>

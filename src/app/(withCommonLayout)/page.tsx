@@ -1,3 +1,4 @@
+import ContactSection from "@/components/ContactUs/ContactUs";
 import GetFeaturedTravel from "@/components/GetFeaturedTravel/GetFeaturedTravel";
 import ImageGallery from "@/components/ImageGallery/ImageGallery";
 import KnowAboutUs from "@/components/KnowAboutUs/KnowAboutUs";
@@ -10,6 +11,7 @@ const Home = () => {
       <GetFeaturedTravel />
       <KnowAboutUs />
       <ImageGallery />
+      <ContactSection />
     </div>
   );
 };

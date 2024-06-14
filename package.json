@@ -20,6 +20,7 @@
     "@mui/x-data-grid": "^7.6.1",
     "@mui/x-date-pickers": "^7.6.1",
     "@reduxjs/toolkit": "^2.2.5",
+    "aos": "^2.3.4",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "jwt-decode": "^4.0.0",
@@ -32,6 +33,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

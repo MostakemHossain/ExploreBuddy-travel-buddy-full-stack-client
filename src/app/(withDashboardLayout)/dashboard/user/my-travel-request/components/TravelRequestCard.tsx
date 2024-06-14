@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Image from "next/image";
+import Link from "next/link";
 
 type TProps = {
   trip: any;
@@ -63,7 +64,9 @@ export function TravelRequestCard({ trip }: TProps) {
         <Typography fontWeight={600} style={statusStyle}>
           {trip.status}
         </Typography>
-        <Button size="small">View Details</Button>
+        <Link href={`/dashboard/user/my-travel-request/${trip.trip.id}`}>
+          <Button size="small">View Details</Button>
+        </Link>
       </CardActions>
     </Card>
   );
