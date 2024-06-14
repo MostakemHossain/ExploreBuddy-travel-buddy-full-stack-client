@@ -81,7 +81,11 @@ const ContactSection = () => {
           />
         </Grid>
         <Grid item xs={12} md={6} data-aos="fade-left">
-          <Typography variant="h4" sx={{ mb: 2, textAlign: "center" }}>
+          <Typography
+            variant="h4"
+            color={"primary.main"}
+            sx={{ mb: 2, textAlign: "center" }}
+          >
             Contact Us
           </Typography>
           <form>

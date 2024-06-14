@@ -1,4 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
+import "aos/dist/aos.css";
 
 const Banner = () => {
   return (
@@ -24,6 +25,7 @@ const Banner = () => {
                 fontWeight={600}
                 gutterBottom
                 sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" } }}
+                data-aos="fade-right"
               >
                 Explore the World with Us...
               </Typography>
@@ -34,6 +36,8 @@ const Banner = () => {
                 gutterBottom
                 fontWeight={600}
                 sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" } }}
+                data-aos="fade-left"
+                data-aos-delay="200"
               >
                 Discover Your Next Adventure and{" "}
                 <span style={{ color: "#ff5722" }}>
@@ -47,6 +51,8 @@ const Banner = () => {
                 component="p"
                 gutterBottom
                 sx={{ fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" } }}
+                data-aos="fade-up"
+                data-aos-delay="400"
               >
                 Join our travel community and find the perfect destination that
                 matches your wanderlust. Enjoy a seamless travel experience with
@@ -61,6 +67,8 @@ const Banner = () => {
                   alignItems: { xs: "center", sm: "flex-start" },
                   gap: { xs: 2, sm: 0 },
                 }}
+                data-aos="fade-up"
+                data-aos-delay="600"
               >
                 <Button
                   variant="contained"
@@ -99,6 +107,7 @@ const Banner = () => {
                 component="img"
                 src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D"
                 alt="Main Building"
+                data-aos="fade-up"
                 sx={{
                   width: "100%",
                   borderRadius: "15px",
@@ -112,6 +121,7 @@ const Banner = () => {
                 component="img"
                 src="https://images.unsplash.com/photo-1541410965313-d53b3c16ef17?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D"
                 alt="Travel"
+                data-aos="fade-left"
                 sx={{
                   position: "absolute",
                   width: { xs: "80px", sm: "120px", md: "320px" },
@@ -128,6 +138,7 @@ const Banner = () => {
                 component="img"
                 src="https://images.unsplash.com/photo-1553697388-94e804e2f0f6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzl8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D"
                 alt="Travel"
+                data-aos="fade-right"
                 sx={{
                   position: "absolute",
                   width: { xs: "80px", sm: "120px", md: "320px" },

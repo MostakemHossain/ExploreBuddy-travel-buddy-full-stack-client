@@ -1,8 +1,10 @@
 "use client";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Grid, IconButton, Modal, Typography } from "@mui/material";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import img1 from "../../assets/imageGallery/img10.jpeg";
 import img8 from "../../assets/imageGallery/img11.jpeg";
 import img2 from "../../assets/imageGallery/img2.jpg";
@@ -14,6 +16,14 @@ import img7 from "../../assets/imageGallery/img7.jpg";
 
 const ImageGallery = () => {
   const [fullImageSrc, setFullImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // animation duration
+      offset: 100, // offset (in px) from the original trigger point
+      once: true, // whether animation should happen only once - while scrolling down
+    });
+  }, []);
 
   const openFullImage = (src: string) => {
     setFullImageSrc(src);
@@ -47,6 +57,7 @@ const ImageGallery = () => {
                 alt="Full Image"
                 id="fullImg"
                 style={{ maxWidth: "90%", maxHeight: "90%" }}
+                data-aos="zoom-in"
               />
               <IconButton
                 onClick={closeFullImage}
@@ -72,6 +83,7 @@ const ImageGallery = () => {
             fontWeight: "bold",
             fontFamily: "-moz-initial",
           }}
+          data-aos="fade-up"
         >
           Where All the Stories From Your Travels Find Their Home. <br />{" "}
           <span style={{ color: "#c11414" }}>Share Your Story</span>
@@ -82,7 +94,16 @@ const ImageGallery = () => {
         <Grid container spacing={3}>
           {[img1, img2, img3, img4, img5, img6, img7, img8].map(
             (img, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                key={index}
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
                 <Box
                   sx={{
                     overflow: "hidden",
