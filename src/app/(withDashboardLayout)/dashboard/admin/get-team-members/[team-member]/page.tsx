@@ -2,6 +2,7 @@
 import {
   useCreateATeamMutation,
   useGetAEmployeeQuery,
+  useUpdateATeamMemberMutation,
 } from "@/redux/api/teamApi";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -55,6 +56,7 @@ const UpdateATeam = ({ params }: { params: TParams }) => {
     useCreateATeamMutation();
   const { data: employeeData, isLoading: employeeLoading } =
     useGetAEmployeeQuery(params["team-member"]);
+  const [updateATeamMember, { isLoading }] = useUpdateATeamMemberMutation();
 
   const [profileData, setProfileData] = useState({
     name: "",
@@ -102,20 +104,14 @@ const UpdateATeam = ({ params }: { params: TParams }) => {
         formData.append("file", selectedFile);
       }
       formData.append("data", JSON.stringify(profileData));
-      const res = await createATeam(formData).unwrap();
+      const res = await updateATeamMember({
+        id: params["team-member"],
+        data: formData,
+      }).unwrap();
       if (res.id) {
-        toast.success("Created a team member successfully");
-        // Clear the form fields
-        setProfileData({
-          name: "",
-          designation: "",
-          facebook: "",
-          instagram: "",
-          linkedin: "",
-        });
-        setSelectedFile(null);
-        setPreview(null);
-        setErrors({ name: "", designation: "" });
+        toast.success("Updated a team member successfully");
+      } else {
+        toast.error("Something went wrong");
       }
     } catch (e) {
       if (e instanceof z.ZodError) {
@@ -124,6 +120,7 @@ const UpdateATeam = ({ params }: { params: TParams }) => {
           validationErrors[err.path[0]] = err.message;
         });
         setErrors(validationErrors);
+        toast.error(validationErrors);
       }
     }
   };
@@ -225,7 +222,7 @@ const UpdateATeam = ({ params }: { params: TParams }) => {
             sx={{ mt: 2 }}
             fullWidth
           >
-            Update A Team Member
+            {isLoading ? "Loading..." : "Update A Team Member"}
           </Button>
         </Grid>
       </Grid>

@@ -12,6 +12,15 @@ export const teamAPI = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.team],
     }),
+    updateATeamMember: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/team/${id}`,
+        method: "PATCH",
+        data,
+        contentType: "multipart/form-data",
+      }),
+      invalidatesTags: [tagTypes.team],
+    }),
     getAllTeamMembers: build.query({
       query: () => ({
         url: `/team`,
@@ -45,4 +54,5 @@ export const {
   useGetAllTeamMembersQuery,
   useDeleteAEmployeeMutation,
   useGetAEmployeeQuery,
+  useUpdateATeamMemberMutation,
 } = teamAPI;
