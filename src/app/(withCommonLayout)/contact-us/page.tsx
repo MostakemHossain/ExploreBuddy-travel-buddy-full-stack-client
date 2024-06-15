@@ -1,11 +1,10 @@
+import ContactSection from "@/components/ContactUs/ContactUs";
 import {
   Box,
-  Button,
   CardContent,
   Container,
   Grid,
   Paper,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Metadata } from "next";
@@ -70,66 +69,7 @@ const Contact = () => {
           best trips and advice.
         </Typography>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <Paper elevation={0} style={{ padding: "3rem" }}>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} md={6}>
-                  <img
-                    src="/c1.png"
-                    alt="Contact Us"
-                    style={{ width: "100%", borderRadius: "8px" }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <form noValidate autoComplete="off">
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="name"
-                      label="Name"
-                      name="name"
-                      autoComplete="name"
-                      autoFocus
-                    />
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email"
-                      name="email"
-                      autoComplete="email"
-                    />
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      name="feedback"
-                      label="Feedback"
-                      id="feedback"
-                      multiline
-                      rows={4}
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      style={{ marginTop: "1rem" }}
-                    >
-                      Submit
-                    </Button>
-                  </form>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-        </Grid>
+        <ContactSection />
         <Grid
           container
           spacing={4}

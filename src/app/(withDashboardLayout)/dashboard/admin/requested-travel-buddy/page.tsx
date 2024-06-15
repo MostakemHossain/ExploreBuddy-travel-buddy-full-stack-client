@@ -31,7 +31,7 @@ const RequestedTravelBuddy = () => {
   useEffect(() => {
     if (data) {
       const initialRows = data.map((item: any) => ({
-        id: item.id.toString(), // Use the actual backend ID
+        id: item.id.toString(),
         destination: item.trip.destination,
         budget: item.trip.budget,
         startDate: item.trip.startDate,
@@ -57,7 +57,6 @@ const RequestedTravelBuddy = () => {
       }
     } catch (error) {
       console.error("Failed to save status change:", error);
-      // Optionally revert status change on failure
       setRows((prevRows: any) =>
         prevRows.map((row: any) =>
           row.id === id

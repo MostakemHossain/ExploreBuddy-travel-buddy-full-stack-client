@@ -2,6 +2,7 @@ import { userRole } from "@/constants/role";
 import { DrawerItem, UserRole } from "@/types";
 import BackpackIcon from "@mui/icons-material/Backpack";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ExploreIcon from "@mui/icons-material/Explore";
 import KeyIcon from "@mui/icons-material/Key";
@@ -40,6 +41,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           title: "Requested Travel Buddy",
           path: `${role}/requested-travel-buddy`,
           icon: ExploreIcon,
+        },
+        {
+          title: "User Contact Information",
+          path: `${role}/user-contact-information`,
+          icon: ContactMailIcon,
         }
       );
       break;
