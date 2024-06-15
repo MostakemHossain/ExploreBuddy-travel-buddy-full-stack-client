@@ -1,5 +1,8 @@
 "use client";
-import { useCreateATeamMutation } from "@/redux/api/teamApi";
+import {
+  useCreateATeamMutation,
+  useGetAEmployeeQuery,
+} from "@/redux/api/teamApi";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonIcon from "@mui/icons-material/Person";
@@ -15,11 +18,10 @@ import {
   styled,
 } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
-// Zod schema for form validation
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
   designation: z.string().min(1, "Designation is required"),
@@ -44,9 +46,16 @@ const StylesInformationBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const CreateATeam = () => {
+type TParams = {
+  "team-member": string;
+};
+
+const UpdateATeam = ({ params }: { params: TParams }) => {
   const [createATeam, { isLoading: createTeamLoading }] =
     useCreateATeamMutation();
+  const { data: employeeData, isLoading: employeeLoading } =
+    useGetAEmployeeQuery(params["team-member"]);
+
   const [profileData, setProfileData] = useState({
     name: "",
     designation: "",
@@ -54,9 +63,23 @@ const CreateATeam = () => {
     instagram: "",
     linkedin: "",
   });
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [errors, setErrors] = useState({ name: "", designation: "" });
+
+  useEffect(() => {
+    if (employeeData) {
+      setProfileData({
+        name: employeeData.name,
+        designation: employeeData.designation,
+        facebook: employeeData.facebookURL || "",
+        instagram: employeeData.instagramURL || "",
+        linkedin: employeeData.linkedinURL || "",
+      });
+      setPreview(employeeData.profilePhoto || null);
+    }
+  }, [employeeData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -104,6 +127,14 @@ const CreateATeam = () => {
       }
     }
   };
+
+  if (employeeLoading) {
+    return (
+      <Container sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -194,7 +225,7 @@ const CreateATeam = () => {
             sx={{ mt: 2 }}
             fullWidth
           >
-            Create A Team Member
+            Update A Team Member
           </Button>
         </Grid>
       </Grid>
@@ -202,4 +233,4 @@ const CreateATeam = () => {
   );
 };
 
-export default CreateATeam;
+export default UpdateATeam;

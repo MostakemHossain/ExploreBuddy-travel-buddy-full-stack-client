@@ -28,6 +28,15 @@ export const teamAPI = baseApi.injectEndpoints({
       },
       invalidatesTags: [tagTypes.team],
     }),
+    getAEmployee: build.query({
+      query: (id) => {
+        return {
+          url: `/team/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.team],
+    }),
   }),
 });
 
@@ -35,4 +44,5 @@ export const {
   useCreateATeamMutation,
   useGetAllTeamMembersQuery,
   useDeleteAEmployeeMutation,
+  useGetAEmployeeQuery,
 } = teamAPI;
