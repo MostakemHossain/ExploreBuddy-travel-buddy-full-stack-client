@@ -1,9 +1,46 @@
+"use client";
+import { useUserContactMutation } from "@/redux/api/contactApi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import "aos/dist/aos.css";
 import Image from "next/image";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+// Define the Zod schema for form validation
+const schema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  message: z.string().min(1, "Message is required"),
+});
 
 const ContactSection = () => {
+  const [userContact, { isLoading }] = useUserContactMutation();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset, // get reset function from useForm
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  // Function to handle form submission
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await userContact(data).unwrap();
+      if (res.id) {
+        toast.success("Message sent successfully!");
+        reset(); // reset the form after successful submission
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -13,7 +50,7 @@ const ContactSection = () => {
         m: { xs: 0, lg: 20 },
       }}
     >
-      {/* Top Left Shape */}
+      {/* Decorative shapes */}
       <Box
         sx={{
           position: "absolute",
@@ -26,7 +63,6 @@ const ContactSection = () => {
           transform: "translate(-50%, -50%)",
         }}
       />
-      {/* Top Right Shape */}
       <Box
         sx={{
           position: "absolute",
@@ -39,7 +75,6 @@ const ContactSection = () => {
           transform: "translate(50%, -50%)",
         }}
       />
-      {/* Bottom Left Shape */}
       <Box
         sx={{
           position: "absolute",
@@ -52,7 +87,6 @@ const ContactSection = () => {
           transform: "translate(-50%, 50%)",
         }}
       />
-      {/* Bottom Right Shape */}
       <Box
         sx={{
           position: "absolute",
@@ -88,40 +122,90 @@ const ContactSection = () => {
           >
             Contact Us
           </Typography>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               <Grid item xs={12} data-aos="fade-up" data-aos-delay="100">
-                <TextField
-                  fullWidth
-                  label="Name"
-                  variant="outlined"
-                  InputProps={{ style: { borderRadius: 20 } }}
+                <Controller
+                  name="name"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Name"
+                      variant="outlined"
+                      error={!!errors.name}
+                      helperText={
+                        errors.name ? String(errors.name.message) : ""
+                      }
+                      InputProps={{ style: { borderRadius: 20 } }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} data-aos="fade-up" data-aos-delay="200">
-                <TextField
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                  InputProps={{ style: { borderRadius: 20 } }}
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Email"
+                      variant="outlined"
+                      error={!!errors.email}
+                      helperText={
+                        errors.email ? String(errors.email.message) : ""
+                      }
+                      InputProps={{ style: { borderRadius: 20 } }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} data-aos="fade-up" data-aos-delay="300">
-                <TextField
-                  fullWidth
-                  label="Phone No."
-                  variant="outlined"
-                  InputProps={{ style: { borderRadius: 20 } }}
+                <Controller
+                  name="phoneNumber"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Phone No."
+                      variant="outlined"
+                      error={!!errors.phoneNumber}
+                      helperText={
+                        errors.phoneNumber
+                          ? String(errors.phoneNumber.message)
+                          : ""
+                      }
+                      InputProps={{ style: { borderRadius: 20 } }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} data-aos="fade-up" data-aos-delay="400">
-                <TextField
-                  fullWidth
-                  label="Message"
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  InputProps={{ style: { borderRadius: 20 } }}
+                <Controller
+                  name="message"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Message"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      error={!!errors.message}
+                      helperText={
+                        errors.message ? String(errors.message.message) : ""
+                      }
+                      InputProps={{ style: { borderRadius: 20 } }}
+                    />
+                  )}
                 />
               </Grid>
               <Grid
@@ -145,6 +229,7 @@ const ContactSection = () => {
                     textTransform: "none",
                     width: { xs: "100%", sm: "auto", lg: "70%" },
                   }}
+                  disabled={isLoading}
                 >
                   Send Message
                 </Button>
