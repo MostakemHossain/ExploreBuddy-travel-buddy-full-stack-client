@@ -17,8 +17,22 @@ export const teamAPI = baseApi.injectEndpoints({
         url: `/team`,
         method: "GET",
       }),
+      providesTags: [tagTypes.team],
+    }),
+    deleteAEmployee: build.mutation({
+      query: (id) => {
+        return {
+          url: `/team/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: [tagTypes.team],
     }),
   }),
 });
 
-export const { useCreateATeamMutation, useGetAllTeamMembersQuery } = teamAPI;
+export const {
+  useCreateATeamMutation,
+  useGetAllTeamMembersQuery,
+  useDeleteAEmployeeMutation,
+} = teamAPI;

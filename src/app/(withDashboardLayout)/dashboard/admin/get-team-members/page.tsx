@@ -1,5 +1,8 @@
 "use client";
-import { useGetAllTeamMembersQuery } from "@/redux/api/teamApi";
+import {
+  useDeleteAEmployeeMutation,
+  useGetAllTeamMembersQuery,
+} from "@/redux/api/teamApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -10,12 +13,15 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 import DeleteTeamModal from "./components/DeleteTeamMember";
 
 const AllEmployees = () => {
   const { data, isLoading } = useGetAllTeamMembersQuery("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+  const [deleteAEmployee, { isLoading: deleteAEmployeeLoadin }] =
+    useDeleteAEmployeeMutation();
 
   const handleDelete = (id: string) => {
     setSelectedTripId(id);
@@ -23,20 +29,23 @@ const AllEmployees = () => {
   };
 
   const confirmDelete = async () => {
-    // if (selectedTripId) {
-    //   try {
-    //     const res = await deleteMyTrip(selectedTripId).unwrap();
-    //     if (res.id) {
-    //       toast("Tour Deleted Successfully");
-    //     }
-    //   } catch (error: any) {
-    //     console.error(error);
-    //   } finally {
-    //     setIsModalOpen(false);
-    //     setSelectedTripId(null);
-    //   }
-    // }
+    if (selectedTripId) {
+      try {
+        const res = await deleteAEmployee(selectedTripId).unwrap();
+        if (res.id) {
+          toast.success("Employee Deleted Successfully");
+        }
+      } catch (error: any) {
+        console.error(error);
+      } finally {
+        setIsModalOpen(false);
+        setSelectedTripId(null);
+      }
+    }
   };
+
+  const defaultAvatarUrl =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMaPwpClKq_MJ8fYhr9yhhpQKq-MGSDHw4-g&s";
 
   const columns: GridColDef[] = [
     {
@@ -52,11 +61,14 @@ const AllEmployees = () => {
           }}
         >
           <Image
-            src={params.value}
+            src={params.value || defaultAvatarUrl}
             alt="profile"
             width={50}
             height={50}
             style={{ width: 50, height: 50, borderRadius: "50%" }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = defaultAvatarUrl;
+            }}
           />
         </Box>
       ),
