@@ -4,6 +4,7 @@ import BackpackIcon from "@mui/icons-material/Backpack";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
 import ExploreIcon from "@mui/icons-material/Explore";
 import KeyIcon from "@mui/icons-material/Key";
 import LuggageIcon from "@mui/icons-material/Luggage";
@@ -41,6 +42,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           title: "Requested Travel Buddy",
           path: `${role}/requested-travel-buddy`,
           icon: ExploreIcon,
+        },
+        {
+          title: "Add Team member & Employees",
+          path: `${role}/manage-employee`,
+          icon: Diversity3Icon,
         },
         {
           title: "User Contact Information",
