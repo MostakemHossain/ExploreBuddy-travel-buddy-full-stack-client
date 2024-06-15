@@ -6,6 +6,7 @@ import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import ExploreIcon from "@mui/icons-material/Explore";
+import Groups2Icon from "@mui/icons-material/Groups2";
 import KeyIcon from "@mui/icons-material/Key";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import PeopleIcon from "@mui/icons-material/People";
@@ -47,6 +48,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           title: "Add Team member & Employees",
           path: `${role}/manage-employee`,
           icon: Diversity3Icon,
+        },
+        {
+          title: "All Team member & Employees",
+          path: `${role}/get-team-members`,
+          icon: Groups2Icon,
         },
         {
           title: "User Contact Information",

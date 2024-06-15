@@ -12,7 +12,13 @@ export const teamAPI = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.team],
     }),
+    getAllTeamMembers: build.query({
+      query: () => ({
+        url: `/team`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateATeamMutation } = teamAPI;
+export const { useCreateATeamMutation, useGetAllTeamMembersQuery } = teamAPI;

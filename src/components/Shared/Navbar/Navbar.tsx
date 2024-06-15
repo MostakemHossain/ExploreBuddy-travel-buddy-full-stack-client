@@ -1,5 +1,6 @@
 "use client";
 import ToggleSwitch from "@/components/ToggleButton/ToggleButton";
+import { isLoggedIn } from "@/services/auth.services";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
@@ -48,7 +49,7 @@ const Navbar = () => {
     { title: "About Us", path: "/about" },
     { title: "Tours", path: "/tours" },
     { title: "Contact Us", path: "/contact-us" },
-    { title: "Dashboard", path: "/dashboard" },
+    ...(isLoggedIn() ? [{ title: "Dashboard", path: "/dashboard" }] : []),
   ];
 
   if (!mounted) {

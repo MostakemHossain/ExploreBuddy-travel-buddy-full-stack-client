@@ -86,7 +86,7 @@ const TravelCard = ({ trip }: TProps) => {
           alignItems="center"
           mt={2}
         >
-          <Link href={`/trip/${trip.trip.id}`} passHref>
+          <Link href={`/${trip.trip.id}`} passHref>
             <Button variant="contained" color="primary">
               Details
             </Button>
