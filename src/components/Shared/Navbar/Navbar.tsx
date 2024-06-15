@@ -47,7 +47,7 @@ const Navbar = () => {
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "About Us", path: "/about" },
-    { title: "Tours", path: "/tours" },
+    { title: "Tours", path: "/tour-page" },
     { title: "Contact Us", path: "/contact-us" },
     ...(isLoggedIn() ? [{ title: "Dashboard", path: "/dashboard" }] : []),
   ];
