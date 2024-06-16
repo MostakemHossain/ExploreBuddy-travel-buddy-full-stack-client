@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import "aos/dist/aos.css";
+import Link from "next/link";
 
 const Banner = () => {
   return (
@@ -77,19 +77,21 @@ const Banner = () => {
                 >
                   Book Your Trip
                 </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  sx={{
-                    margin: { sm: "0 0 0 10px" },
-                    "&:hover": {
-                      backgroundColor: "primary.main",
-                      color: "white",
-                    },
-                  }}
-                >
-                  Explore more
-                </Button>
+                <Link href="/tour-page">
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    sx={{
+                      margin: { sm: "0 0 0 10px" },
+                      "&:hover": {
+                        backgroundColor: "primary.main",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Explore more
+                  </Button>
+                </Link>
               </Box>
             </Box>
           </Grid>

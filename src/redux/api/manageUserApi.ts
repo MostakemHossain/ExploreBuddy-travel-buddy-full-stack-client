@@ -17,6 +17,7 @@ const myProfileApi = baseApi.injectEndpoints({
         method: "PATCH",
         data,
       }),
+      invalidatesTags: [tagTypes.manageUser],
     }),
   }),
 });

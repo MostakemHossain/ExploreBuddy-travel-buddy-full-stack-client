@@ -18,7 +18,7 @@ import {
 import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import { useState } from "react";
-import ProfileUpdateModal from "./components/ProfileUpdateModal";
+import ProfileUpdateModal from "../../user/profile/components/ProfileUpdateModal";
 
 const StylesInformationBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#f4f7fe",
@@ -57,7 +57,7 @@ const MyProfile = () => {
           <Grid item xs={4}>
             <Box
               sx={{
-                height: 300,
+                height: 400,
                 width: "100%",
                 overflow: "hidden",
                 borderRadius: 1,
@@ -70,56 +70,51 @@ const MyProfile = () => {
               {isLoading ? (
                 <CircularProgress />
               ) : (
-                <Image
-                  src={data?.profilePhoto}
-                  height={300}
-                  width={400}
-                  alt="user photo"
+                data?.profilePhoto && (
+                  <Image
+                    src={data?.profilePhoto}
+                    height={500}
+                    width={400}
+                    alt="user photo"
+                  />
+                )
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+                backgroundColor: "primary.main",
+                color: "#fff",
+                mb: 2,
+                mt: 2,
+              }}
+            >
+              {updatingProfile ? (
+                <Typography color={"#fff"}>Loading...</Typography>
+              ) : (
+                <AutoFileUploader
+                  name="file"
+                  label="Choose Your Profile Photo"
+                  icon={<CloudUploadIcon />}
+                  onFileUpload={fileUploadHandler}
+                  variant="text"
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "#fff",
+
+                    ":hover": {
+                      backgroundColor: "primary.dark",
+                    },
+                    "& .MuiButton-label": {
+                      color: "#fff",
+                    },
+                  }}
                 />
               )}
             </Box>
-            {updatingProfile ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  p: 2,
-                  backgroundColor: "primary.main",
-                  color: "#fff",
-                  mb: 2,
-                  mt: 2,
-                }}
-              >
-                <CircularProgress size={24} />
-                <Typography >
-                  <CircularProgress
-                    sx={{
-                      color: "black",
-                    }}
-                  />
-                </Typography>
-              </Box>
-            ) : (
-              <AutoFileUploader
-                name="file"
-                label="Choice Your Profile Photo"
-                icon={<CloudUploadIcon />}
-                onFileUpload={fileUploadHandler}
-                variant="text"
-                sx={{
-                  p: 2,
-                  backgroundColor: "primary.main",
-                  color: "#fff",
-                  mb: 2,
-                  mt: 2,
-                  ":hover": {
-                    backgroundColor: "primary.dark",
-                  },
-                }}
-              />
-            )}
-
             <Button
               fullWidth
               endIcon={<ModeEditIcon />}
@@ -146,25 +141,25 @@ const MyProfile = () => {
                     <Typography color={"secondary"} variant="caption">
                       Role{" "}
                     </Typography>
-                    <Typography>{data.role}</Typography>
+                    <Typography>{data?.role}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Name{" "}
                     </Typography>
-                    <Typography>{data.name}</Typography>
+                    <Typography>{data?.name}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Email{" "}
                     </Typography>
-                    <Typography>{data.email}</Typography>
+                    <Typography>{data?.email}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Status{" "}
                     </Typography>
-                    <Typography color={"#119c34"}>{data.status}</Typography>
+                    <Typography color={"#119c34"}>{data?.status}</Typography>
                   </StylesInformationBox>
                 </>
               )}

@@ -2,7 +2,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Grid, IconButton, Modal, Typography } from "@mui/material";
 import AOS from "aos";
-import "aos/dist/aos.css";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import img1 from "../../assets/imageGallery/img10.jpeg";

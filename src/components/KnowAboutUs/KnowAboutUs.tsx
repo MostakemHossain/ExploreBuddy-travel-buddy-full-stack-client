@@ -15,7 +15,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import "aos/dist/aos.css";
+
 import Image from "next/image";
 
 import img from "@/assets/images/about.avif";

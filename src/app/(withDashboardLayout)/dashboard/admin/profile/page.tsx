@@ -72,7 +72,7 @@ const MyProfile = () => {
               ) : (
                 data?.profilePhoto && (
                   <Image
-                    src={data.profilePhoto}
+                    src={data?.profilePhoto}
                     height={500}
                     width={400}
                     alt="user photo"
@@ -80,40 +80,41 @@ const MyProfile = () => {
                 )
               )}
             </Box>
-            {updatingProfile ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  p: 2,
-                  backgroundColor: "primary.main",
-                  color: "#fff",
-                  mb: 2,
-                  mt: 2,
-                }}
-              >
-                <CircularProgress size={24} />
-              </Box>
-            ) : (
-              <AutoFileUploader
-                name="file"
-                label="Choose Your Profile Photo"
-                icon={<CloudUploadIcon />}
-                onFileUpload={fileUploadHandler}
-                variant="text"
-                sx={{
-                  p: 2,
-                  backgroundColor: "primary.main",
-                  color: "#fff",
-                  mb: 2,
-                  mt: 2,
-                  ":hover": {
-                    backgroundColor: "primary.dark",
-                  },
-                }}
-              />
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+                backgroundColor: "primary.main",
+                color: "#fff",
+                mb: 2,
+                mt: 2,
+              }}
+            >
+              {updatingProfile ? (
+                <Typography color={"#fff"}>Loading...</Typography>
+              ) : (
+                <AutoFileUploader
+                  name="file"
+                  label="Choose Your Profile Photo"
+                  icon={<CloudUploadIcon />}
+                  onFileUpload={fileUploadHandler}
+                  variant="text"
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "#fff",
+
+                    ":hover": {
+                      backgroundColor: "primary.dark",
+                    },
+                    "& .MuiButton-label": {
+                      color: "#fff",
+                    },
+                  }}
+                />
+              )}
+            </Box>
             <Button
               fullWidth
               endIcon={<ModeEditIcon />}
@@ -140,25 +141,25 @@ const MyProfile = () => {
                     <Typography color={"secondary"} variant="caption">
                       Role{" "}
                     </Typography>
-                    <Typography>{data.role}</Typography>
+                    <Typography>{data?.role}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Name{" "}
                     </Typography>
-                    <Typography>{data.name}</Typography>
+                    <Typography>{data?.name}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Email{" "}
                     </Typography>
-                    <Typography>{data.email}</Typography>
+                    <Typography>{data?.email}</Typography>
                   </StylesInformationBox>
                   <StylesInformationBox>
                     <Typography color={"secondary"} variant="caption">
                       Status{" "}
                     </Typography>
-                    <Typography color={"#119c34"}>{data.status}</Typography>
+                    <Typography color={"#119c34"}>{data?.status}</Typography>
                   </StylesInformationBox>
                 </>
               )}

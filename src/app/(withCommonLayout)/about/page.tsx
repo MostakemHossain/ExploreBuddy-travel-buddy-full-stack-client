@@ -1,12 +1,5 @@
+"use client";
 import img from "@/assets/images/Img-01.jpg";
-import p1 from "@/assets/images/p1.jpeg";
-import p2 from "@/assets/images/p2.jpeg";
-import p3 from "@/assets/images/p3.jpeg";
-import p4 from "@/assets/images/p4.jpeg";
-import p5 from "@/assets/images/p5.jpeg";
-import p6 from "@/assets/images/p6.jpeg";
-import p7 from "@/assets/images/p7.jpeg";
-import p8 from "@/assets/images/p8.jpeg";
 import { Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import CommuteIcon from "@mui/icons-material/Commute";
@@ -20,6 +13,7 @@ import {
   Container,
   Grid,
   IconButton,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -27,92 +21,11 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Image from "next/image";
 
+import { useGetAllTeamMembersQuery } from "@/redux/api/teamApi";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-const teamMembers = [
-  {
-    name: "Jane Smith",
-    position: "CEO & Founder",
-    imageUrl: p1,
-    socialLinks: {
-      facebook: "https://www.facebook.com/janesmith",
-      twitter: "https://twitter.com/janesmith",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-  },
-  {
-    name: "Marry Deff",
-    position: "CFO",
-    imageUrl: p2,
-    socialLinks: {
-      facebook: "https://www.facebook.com/marrydeff",
-      twitter: "https://twitter.com/marrydeff",
-      linkedin: "https://www.linkedin.com/in/marrydeff",
-    },
-  },
-  {
-    name: "Gren Johnson",
-    position: "Manager",
-    imageUrl: p3,
-    socialLinks: {
-      facebook: "https://www.facebook.com/grenjohnson",
-      twitter: "https://twitter.com/grenjohnson",
-      linkedin: "https://www.linkedin.com/in/grenjohnson",
-    },
-  },
-  {
-    name: "Alis Holmes",
-    position: "Tour Manager",
-    imageUrl: p4,
-    socialLinks: {
-      facebook: "https://www.facebook.com/alisholmes",
-      twitter: "https://twitter.com/alisholmes",
-      linkedin: "https://www.linkedin.com/in/alisholmes",
-    },
-  },
-  {
-    name: "James Doe",
-    imageUrl: p5,
-    position: "Marketing Manager",
-    socialLinks: {
-      facebook: "https://www.facebook.com/jamesdoe",
-      twitter: "https://twitter.com/jamesdoe",
-      linkedin: "https://www.linkedin.com/in/jamesdoe",
-    },
-  },
-  {
-    name: "Jean Kole",
-    imageUrl: p6,
-    position: "CTO",
-    socialLinks: {
-      facebook: "https://www.facebook.com/jeankole",
-      twitter: "https://twitter.com/jeankole",
-      linkedin: "https://www.linkedin.com/in/jeankole",
-    },
-  },
-  {
-    name: "David Gartn",
-    position: "Manager",
-    imageUrl: p7,
-    socialLinks: {
-      facebook: "https://www.facebook.com/davidgartn",
-      twitter: "https://twitter.com/davidgartn",
-      linkedin: "https://www.linkedin.com/in/davidgartn",
-      imageUrl: "https://example.com/jane-smith.jpg", //
-    },
-  },
-  {
-    name: "Miki Koko",
-    position: "HR Manager",
-    imageUrl: p8,
-    socialLinks: {
-      facebook: "https://www.facebook.com/mikikoko",
-      twitter: "https://twitter.com/mikikoko",
-      linkedin: "https://www.linkedin.com/in/mikikoko",
-    },
-  },
-];
 
 const AboutUs = () => {
+  const { data, isLoading } = useGetAllTeamMembersQuery("");
   return (
     <Container>
       <Box
@@ -552,54 +465,59 @@ const AboutUs = () => {
         >
           Team & Founders
         </Typography>
-        <Grid container spacing={4}>
-          {teamMembers.map((member, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card>
-                <Box
-                  sx={{
-                    transition: "transform 0.3s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.1)",
-                    },
-                  }}
-                >
-                  <Image
-                    src={member.imageUrl}
-                    alt={member.name}
-                    width={300}
-                    height={200}
-                  />
-                </Box>
-                <CardContent>
-                  <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                    {member.name}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    {member.position}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <IconButton
-                    href={member.socialLinks.facebook}
-                    target="_blank"
+        {isLoading ? (
+          <Box>
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation="wave" />
+            <Skeleton animation="wave" />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Box>
+        ) : (
+          <Grid container spacing={4}>
+            {data.map((member: any, index: number) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Card>
+                  <Box
+                    sx={{
+                      transition: "transform 0.3s ease-in-out",
+                      "&:hover": {
+                        transform: "scale(1.1)",
+                      },
+                    }}
                   >
-                    <Facebook />
-                  </IconButton>
-                  <IconButton href={member.socialLinks.twitter} target="_blank">
-                    <Twitter />
-                  </IconButton>
-                  <IconButton
-                    href={member.socialLinks.linkedin}
-                    target="_blank"
-                  >
-                    <LinkedIn />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <Image
+                      src={member.profilePhoto}
+                      alt={member.name}
+                      width={300}
+                      height={200}
+                    />
+                  </Box>
+                  <CardContent>
+                    <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                      {member.name}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      {member.designation}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <IconButton href={member.facebookURL} target="_blank">
+                      <Facebook />
+                    </IconButton>
+                    <IconButton href={member.instagramURL} target="_blank">
+                      <Twitter />
+                    </IconButton>
+                    <IconButton href={member.linkedinURL} target="_blank">
+                      <LinkedIn />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </Container>
   );

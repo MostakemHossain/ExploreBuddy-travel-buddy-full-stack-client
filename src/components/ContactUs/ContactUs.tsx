@@ -3,7 +3,7 @@ import { useUserContactMutation } from "@/redux/api/contactApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import "aos/dist/aos.css";
+
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";

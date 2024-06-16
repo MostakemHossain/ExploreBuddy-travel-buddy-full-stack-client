@@ -2,8 +2,9 @@
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
 
 const loadingContainer = {
@@ -128,6 +129,16 @@ const GetFeaturedTravel = () => {
             </Grid>
           </>
         )}
+        <Box
+          sx={{
+            mt: 5,
+          }}
+        >
+          {" "}
+          <Link href={"/tour-page"}>
+            <Button>See more</Button>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

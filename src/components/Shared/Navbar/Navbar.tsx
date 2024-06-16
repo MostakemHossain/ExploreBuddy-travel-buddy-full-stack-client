@@ -1,11 +1,12 @@
 "use client";
 import ToggleSwitch from "@/components/ToggleButton/ToggleButton";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { isLoggedIn } from "@/services/auth.services";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
+  Avatar,
   Box,
-  Container,
   Drawer,
   IconButton,
   List,
@@ -25,6 +26,7 @@ import { useEffect, useState } from "react";
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { data, isLoading } = useGetMyProfileQuery({});
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -58,7 +60,14 @@ const Navbar = () => {
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "white", color: "black" }}>
-      <Container>
+      <Box
+        sx={{
+          ml: {
+            sx: 4,
+            lg: 10,
+          },
+        }}
+      >
         <Toolbar>
           <Typography
             variant="h4"
@@ -143,12 +152,31 @@ const Navbar = () => {
               ))}
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <ToggleSwitch />
+
                 <AuthButton />
+                {data?.role && (
+                  <Stack
+                    direction={"row"}
+                    gap={3}
+                    sx={{
+                      marginLeft: "40px",
+                      marginRight: "30px",
+                    }}
+                  >
+                    {data?.role && (
+                      <Link
+                        href={`/dashboard/${data.role.toLowerCase()}/profile`}
+                      >
+                        <Avatar alt={data?.name} src={data?.profilePhoto} />
+                      </Link>
+                    )}
+                  </Stack>
+                )}
               </Box>
             </Stack>
           )}
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
 };
