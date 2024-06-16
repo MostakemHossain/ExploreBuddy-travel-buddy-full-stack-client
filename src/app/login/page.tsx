@@ -14,9 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 
-// Import validationSchema
-import { validationSchema } from "@/components/validationSchema/validationSchema";
-import { zodResolver } from "@hookform/resolvers/zod"; // Import zodResolver
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -43,11 +40,9 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLogin>({
-    resolver: zodResolver(validationSchema),
-  });
+  } = useForm<UserLogin>();
 
-  const onSubmit: SubmitHandler<UserLogin> = async (values: any) => {
+  const onSubmit: SubmitHandler<UserLogin> = async (values: UserLogin) => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
@@ -124,7 +119,7 @@ const LoginForm = () => {
               required
               fullWidth
               id="email"
-              {...register("email")}
+              {...register("email", { required: "Email is required" })}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -139,7 +134,7 @@ const LoginForm = () => {
               required
               fullWidth
               label="Password"
-              {...register("password")}
+              {...register("password", { required: "Password is required" })}
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
