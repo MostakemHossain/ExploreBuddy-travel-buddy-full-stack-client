@@ -1,4 +1,5 @@
 "use client";
+
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import Visibility from "@mui/icons-material/Visibility";
@@ -13,16 +14,14 @@ import {
   Typography,
 } from "@mui/material";
 
+// Import validationSchema
+import { validationSchema } from "@/components/validationSchema/validationSchema";
+import { zodResolver } from "@hookform/resolvers/zod"; // Import zodResolver
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-export const validationSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Please enter your password"),
-});
 
 export type UserLogin = {
   email: string;
@@ -44,8 +43,11 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLogin>();
-  const onSubmit: SubmitHandler<UserLogin> = async (values) => {
+  } = useForm<UserLogin>({
+    resolver: zodResolver(validationSchema),
+  });
+
+  const onSubmit: SubmitHandler<UserLogin> = async (values: any) => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
