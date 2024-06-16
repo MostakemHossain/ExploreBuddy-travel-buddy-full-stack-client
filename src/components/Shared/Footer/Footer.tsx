@@ -1,12 +1,12 @@
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import { Box, Container, Grid, Link, Stack, Typography } from "@mui/material";
-import Image from "next/image";
-import facebook from "../../../assets/landing_page/facebook.png";
-import instagram from "../../../assets/landing_page/instagram.png";
-import linkedin from "../../../assets/landing_page/linkedin.png";
-import twitter from "../../../assets/landing_page/twitter.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
   return (
     <Box bgcolor="rgb(17,26,34)" py={5}>
       <Container>
@@ -38,10 +38,10 @@ const Footer = () => {
               explorebuddy@gmail.com
             </Typography>
             <Stack direction={"row"} gap={4} justifyContent={"center"} py={3}>
-              <Image src={facebook} width={30} height={30} alt="facebook" />
-              <Image src={linkedin} width={30} height={30} alt="linkedin" />
-              <Image src={twitter} width={30} height={30} alt="twitter" />
-              <Image src={instagram} width={30} height={30} alt="instagram" />
+              <FacebookIcon style={{ color: "#fff", fontSize: 30 }} />
+              <TwitterIcon style={{ color: "#fff", fontSize: 30 }} />
+              <LinkedInIcon style={{ color: "#fff", fontSize: 30 }} />
+              <InstagramIcon style={{ color: "#fff", fontSize: 30 }} />
             </Stack>
           </Grid>
           <Grid item xs={12} md={3}>
@@ -93,7 +93,7 @@ const Footer = () => {
               protocol.
             </Typography>
             <Typography color={"white"} variant={"h6"}>
-              privacy Policy || Terms & Conditions
+              Privacy Policy || Terms & Conditions
             </Typography>
           </Grid>
         </Grid>
