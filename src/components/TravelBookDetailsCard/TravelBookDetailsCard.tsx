@@ -17,7 +17,8 @@ type TProps = {
 };
 
 const TravelCard = ({ trip }: TProps) => {
-  const truncatedDescription = trip.trip.description.slice(0, 65) + ".....";
+  const truncatedDescription = trip.description.slice(0, 65) + ".....";
+
   return (
     <Card
       variant="outlined"
@@ -34,7 +35,7 @@ const TravelCard = ({ trip }: TProps) => {
       }}
     >
       <Image
-        src={trip.trip.photos[2]}
+        src={trip.photos[2]}
         alt="card"
         width={500}
         height={100}
@@ -47,7 +48,7 @@ const TravelCard = ({ trip }: TProps) => {
           sx={{ position: "absolute", top: -280, left: 10 }}
         />
         <Typography variant="h6" fontWeight={600} sx={{ mt: 1 }}>
-          {trip.trip.destination}
+          {trip.destination}
           <LocationOnIcon
             fontSize="small"
             sx={{
@@ -70,15 +71,14 @@ const TravelCard = ({ trip }: TProps) => {
         <Box sx={{ mt: 1 }}>
           <Typography variant="body2">
             <span style={{ color: "#00796b" }}>Start Date:</span>{" "}
-            {trip.trip.startDate}
+            {trip.startDate}
           </Typography>
           <Typography variant="body2">
-            <span style={{ color: "#d32f2f" }}>End Date:</span>{" "}
-            {trip.trip.endDate}
+            <span style={{ color: "#d32f2f" }}>End Date:</span> {trip.endDate}
           </Typography>
         </Box>
         <Typography variant="body2" sx={{ mt: 1, color: "purple" }}>
-          Travel Type: {trip.trip.travelType}
+          Travel Type: {trip.travelType}
         </Typography>
         <Box
           display="flex"
@@ -86,13 +86,13 @@ const TravelCard = ({ trip }: TProps) => {
           alignItems="center"
           mt={2}
         >
-          <Link href={`/${trip.trip.id}`} passHref>
+          <Link href={`/${trip.id}`} passHref>
             <Button variant="contained" color="primary">
               Details
             </Button>
           </Link>
           <Typography variant="h6" fontWeight={600}>
-            {trip.trip.budget}$
+            {trip.budget}$
           </Typography>
         </Box>
       </CardContent>

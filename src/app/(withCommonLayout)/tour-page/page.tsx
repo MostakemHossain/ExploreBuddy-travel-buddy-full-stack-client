@@ -1,8 +1,10 @@
 "use client";
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
-import { Box, Grid, Typography } from "@mui/material";
+import { useDebounced } from "@/redux/hooks";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const loadingContainer = {
   display: "flex",
@@ -36,71 +38,115 @@ const loadingCircleVariants = {
 };
 
 const TourPage = () => {
-  const { data, isLoading } = useGetALLApprovalTripRequestQuery("");
+  const query: Record<string, any> = {};
+  const [searchTerm, setsearchTerm] = useState("");
+
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+  const { data, isLoading } = useGetALLApprovalTripRequestQuery({ ...query });
 
   return (
-    <Box
-      sx={{
-        padding: "20px",
-      }}
-    >
-      {isLoading ? (
-        <Box sx={loadingContainer}>
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            initial="start"
-            animate="end"
-          />
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            initial="start"
-            animate="end"
-          />
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            initial="start"
-            animate="end"
+    <Box style={{ textAlign: "center", padding: "2rem" }}>
+      <Box sx={{ my: 4 }}>
+        <Typography
+          variant="h3"
+          color={"primary.main"}
+          component="h1"
+          gutterBottom
+        >
+          Explore the World Your Way
+        </Typography>
+        <Typography
+          variant="h6"
+          color="textSecondary"
+          component="p"
+          gutterBottom
+        >
+          Embrace the journey, conquer the unknown...
+        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <TextField
+            variant="outlined"
+            placeholder="Search destinations, tours, adventures..."
+            onChange={(e) => setsearchTerm(e.target.value)}
+            InputProps={{
+              style: { borderRadius: "50px" },
+            }}
+            sx={{
+              width: {
+                xs: "100%",
+                md: "700px",
+              },
+              maxWidth: "100%",
+            }}
           />
         </Box>
-      ) : (
-        <>
-          <Typography
-            sx={{
-              textAlign: "center",
-              m: 3,
-            }}
-            variant="h4"
-            fontWeight={600}
-            gutterBottom
-          >
-            The journey of a thousand miles begins with a single step.
-          </Typography>
-          <Typography
-            fontWeight={600}
-            sx={{
-              textAlign: "center",
-              marginBottom: 2,
-            }}
-          >
-            Your gateway to unforgettable adventures.
-          </Typography>
-          <Grid
-            container
-            spacing={3}
-            justifyContent="center"
-            alignItems="center"
-          >
-            {data?.map((trip: any, index: number) => (
-              <Grid item key={index} xs={12} sm={6} md={4}>
-                <TravelCard trip={trip} />
-              </Grid>
-            ))}
-          </Grid>
-        </>
-      )}
+      </Box>
+
+      <Box sx={{ padding: "20px" }}>
+        {isLoading ? (
+          <Box sx={loadingContainer}>
+            <motion.span
+              style={loadingCircle}
+              variants={loadingCircleVariants}
+              initial="start"
+              animate="end"
+            />
+            <motion.span
+              style={loadingCircle}
+              variants={loadingCircleVariants}
+              initial="start"
+              animate="end"
+            />
+            <motion.span
+              style={loadingCircle}
+              variants={loadingCircleVariants}
+              initial="start"
+              animate="end"
+            />
+          </Box>
+        ) : (
+          <>
+            <Typography
+              sx={{
+                textAlign: "center",
+                m: 3,
+              }}
+              variant="h4"
+              fontWeight={600}
+              gutterBottom
+            >
+              Every Adventure Begins with a Single Step
+            </Typography>
+            <Typography
+              fontWeight={600}
+              sx={{
+                textAlign: "center",
+                marginBottom: 2,
+              }}
+            >
+              Discover your next unforgettable journey.
+            </Typography>
+            <Grid
+              container
+              spacing={3}
+              justifyContent="center"
+              alignItems="center"
+            >
+              {data?.map((trip: any, index: number) => (
+                <Grid item key={index} xs={12} sm={6} md={4}>
+                  <TravelCard trip={trip} />
+                </Grid>
+              ))}
+            </Grid>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

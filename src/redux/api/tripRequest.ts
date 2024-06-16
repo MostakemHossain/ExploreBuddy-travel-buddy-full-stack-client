@@ -18,9 +18,10 @@ const tripRequestApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.tripRequest],
     }),
     getALLApprovalTripRequest: build.query({
-      query: () => ({
-        url: `/trip/travel-request/approval`,
+      query: (arg: Record<string, any>) => ({
+        url: `/trips/all-trips`,
         method: "GET",
+        params: arg,
       }),
       providesTags: [tagTypes.tripRequest],
     }),
