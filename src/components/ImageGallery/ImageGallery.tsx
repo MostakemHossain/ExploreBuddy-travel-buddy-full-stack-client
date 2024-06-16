@@ -19,9 +19,9 @@ const ImageGallery = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000, // animation duration
-      offset: 100, // offset (in px) from the original trigger point
-      once: true, // whether animation should happen only once - while scrolling down
+      duration: 1000,
+      offset: 100,
+      once: true,
     });
   }, []);
 
@@ -32,6 +32,8 @@ const ImageGallery = () => {
   const closeFullImage = () => {
     setFullImageSrc(null);
   };
+
+  const images = [img1, img2, img3, img4, img5, img6, img7, img8];
 
   return (
     <>
@@ -92,42 +94,40 @@ const ImageGallery = () => {
 
       <Box sx={{ width: "80%", margin: "40px auto 50px" }}>
         <Grid container spacing={3}>
-          {[img1, img2, img3, img4, img5, img6, img7, img8].map(
-            (img, index) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={index}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
+          {images.map((img, index) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              key={index}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
+              <Box
+                sx={{
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  transition: "0.4s",
+                  "&:hover img": {
+                    transform: "scale(0.8) rotate(-20deg)",
+                    borderRadius: "20px",
+                    boxShadow: "0 32px 75px rgba(68, 77, 136, 0.2)",
+                  },
+                }}
+                onClick={() => openFullImage(img.src)}
               >
-                <Box
-                  sx={{
-                    overflow: "hidden",
-                    cursor: "pointer",
-                    transition: "0.4s",
-                    "&:hover img": {
-                      transform: "scale(0.8) rotate(-20deg)",
-                      borderRadius: "20px",
-                      boxShadow: "0 32px 75px rgba(68, 77, 136, 0.2)",
-                    },
-                  }}
-                  onClick={() => openFullImage(img.src)}
-                >
-                  <Image
-                    src={img.src}
-                    width={400}
-                    height={400}
-                    alt="img-gallery"
-                    style={{ width: "100%", transition: "transform 0.4s" }}
-                  />
-                </Box>
-              </Grid>
-            )
-          )}
+                <Image
+                  src={img.src}
+                  width={400}
+                  height={400}
+                  alt="img-gallery"
+                  style={{ width: "100%", transition: "transform 0.4s" }}
+                />
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </>
