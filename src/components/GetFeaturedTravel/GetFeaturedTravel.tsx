@@ -1,6 +1,6 @@
 "use client";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
-import { Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import TravelCard from "../TravelBookDetailsCard/TravelBookDetailsCard";
 
 const GetFeaturedTravel = () => {
@@ -43,6 +43,15 @@ const GetFeaturedTravel = () => {
               </Grid>
             ))}
       </Grid>
+      <Box
+        sx={{
+          display: "flex",
+          marginTop: "15px",
+          justifyContent: "center",
+        }}
+      >
+        <Button>See more</Button>
+      </Box>
     </div>
   );
 };
