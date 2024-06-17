@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -35,7 +34,7 @@ const LoginForm = () => {
     event.preventDefault();
   };
 
-  const router = useRouter();
+  // const router = useRouter();
   const {
     register,
     handleSubmit,

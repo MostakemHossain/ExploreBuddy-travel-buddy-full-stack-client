@@ -6,7 +6,7 @@ import { useChangePasswordMutation } from "@/redux/api/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import KeyIcon from "@mui/icons-material/Key";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -17,7 +17,6 @@ const validationSchema = z.object({
 });
 
 const ChangePassword = () => {
-  const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
   const onSubmit = async (values: FieldValues) => {
     try {
