@@ -476,46 +476,47 @@ const AboutUs = () => {
           </Box>
         ) : (
           <Grid container spacing={4}>
-            {data.map((member: any, index: number) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
-                <Card>
-                  <Box
-                    sx={{
-                      transition: "transform 0.3s ease-in-out",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      },
-                    }}
-                  >
-                    <Image
-                      src={member.profilePhoto}
-                      alt={member.name}
-                      width={300}
-                      height={200}
-                    />
-                  </Box>
-                  <CardContent>
-                    <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                      {member.name}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                      {member.designation}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <IconButton href={member.facebookURL} target="_blank">
-                      <Facebook />
-                    </IconButton>
-                    <IconButton href={member.instagramURL} target="_blank">
-                      <Twitter />
-                    </IconButton>
-                    <IconButton href={member.linkedinURL} target="_blank">
-                      <LinkedIn />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+            {data.length &&
+              data?.map((member: any, index: number) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card>
+                    <Box
+                      sx={{
+                        transition: "transform 0.3s ease-in-out",
+                        "&:hover": {
+                          transform: "scale(1.1)",
+                        },
+                      }}
+                    >
+                      <Image
+                        src={member.profilePhoto}
+                        alt={member.name}
+                        width={300}
+                        height={200}
+                      />
+                    </Box>
+                    <CardContent>
+                      <Typography variant="h5" sx={{ fontWeight: 500 }}>
+                        {member.name}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary">
+                        {member.designation}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <IconButton href={member.facebookURL} target="_blank">
+                        <Facebook />
+                      </IconButton>
+                      <IconButton href={member.instagramURL} target="_blank">
+                        <Twitter />
+                      </IconButton>
+                      <IconButton href={member.linkedinURL} target="_blank">
+                        <LinkedIn />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
           </Grid>
         )}
       </Box>
