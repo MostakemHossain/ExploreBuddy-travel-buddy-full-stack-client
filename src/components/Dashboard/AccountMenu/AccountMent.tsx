@@ -1,3 +1,4 @@
+"use client";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Logout from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
@@ -8,6 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 
 const menuStyles = {
@@ -40,7 +42,7 @@ const menuStyles = {
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  // const router = useRouter();
+  const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -51,7 +53,7 @@ export default function AccountMenu() {
   const handleLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem("accessToken");
-    // router.push("/login");
+    router.push("/login");
   };
 
   return (

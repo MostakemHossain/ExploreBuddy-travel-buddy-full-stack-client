@@ -1,8 +1,6 @@
 "use client";
-import { registerUser } from "@/services/actions/registerUser";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
-import { modifyPayload } from "@/utils/modifyPayload";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
@@ -19,16 +17,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { UserLogin } from "./page";
 
-type Inputs = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-const RegisterForm = () => {
-  const router = useRouter();
+export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -36,28 +29,22 @@ const RegisterForm = () => {
     event.preventDefault();
   };
 
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
-    const data = modifyPayload(values);
+  } = useForm<UserLogin>();
+
+  const onSubmit: SubmitHandler<UserLogin> = async (values: UserLogin) => {
     try {
-      const res = await registerUser(data);
-      if (res?.data?.id) {
+      const res = await userLogin(values);
+      if (res?.data?.accessToken) {
         toast.success(res?.message);
-        const result = await userLogin({
-          email: values.email,
-          password: values.password,
-        });
-        if (result?.data?.accessToken) {
-          storeUserInfo({ accessToken: result?.data?.accessToken });
-          router.push("/dashboard");
-        }
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        router.push("/dashboard");
       } else {
-        toast.error(res?.message);
+        setError(res?.message);
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -97,8 +84,23 @@ const RegisterForm = () => {
             color={"primary.main"}
             variant="h4"
           >
-            Sign Up
+            Login
           </Typography>
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "4px",
+                  borderRadius: "5px",
+                  color: "white",
+                  mt: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
           <Box
             component="form"
             noValidate
@@ -110,29 +112,23 @@ const RegisterForm = () => {
               margin="normal"
               required
               fullWidth
-              id="name"
-              label="Name"
-              {...register("name")}
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
               id="email"
-              {...register("email")}
+              {...register("email", { required: "Email is required" })}
               label="Email Address"
               name="email"
               autoComplete="email"
+              autoFocus
             />
+            {errors.email && (
+              <Typography color="error">{errors.email.message}</Typography>
+            )}
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               label="Password"
-              {...register("password")}
+              {...register("password", { required: "Password is required" })}
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
@@ -151,17 +147,32 @@ const RegisterForm = () => {
                 ),
               }}
             />
+            {errors.password && (
+              <Typography color="error">{errors.password.message}</Typography>
+            )}
+            <Box display="flex" justifyContent="flex-end" sx={{ mt: 1 }}>
+              <Link
+                style={{
+                  color: "#1586FD",
+                  textDecoration: "underline",
+                  fontWeight: "bold",
+                }}
+                href="/forgot-password"
+              >
+                Forgot password?
+              </Link>
+            </Box>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
             >
-              Sign Up
+              Sign In
             </Button>
             <Box display="flex" justifyContent="flex-end">
-              <Box>
-                Already have an account?{" "}
+              <Box sx={{}}>
+                Don&apos;t have an account?{" "}
                 <Link
                   style={{
                     color: "#1586FD",
@@ -169,9 +180,9 @@ const RegisterForm = () => {
                     fontWeight: "bold",
                     paddingLeft: "1px",
                   }}
-                  href="/login"
+                  href="/register"
                 >
-                  Sign in
+                  Sign Up
                 </Link>
               </Box>
             </Box>
@@ -181,5 +192,3 @@ const RegisterForm = () => {
     </Box>
   );
 };
-
-export default RegisterForm;
