@@ -26,11 +26,11 @@ const tripRequestApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.tripRequest],
     }),
     updateSpecificTripRequest: build.mutation({
-      query: ({ id, newStatus }) => ({
-        url: `/trip/travel-buddies/${id}/respond`,
-        method: "PATCH",
-        data: { newStatus },
+      query: (id) => ({
+        url: `/trip/${id}/request`,
+        method: "POST",
       }),
+    invalidatesTags: [tagTypes.myTrips],
     }),
   }),
 });

@@ -1,5 +1,7 @@
 "use client";
 import { useGetTripQuery } from "@/redux/api/tourApi";
+import { useUpdateSpecificTripRequestMutation } from "@/redux/api/tripRequest";
+import { isLoggedIn } from "@/services/auth.services";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -10,6 +12,7 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import {
   Alert,
   Box,
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -21,6 +24,8 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type TParams = {
   "trip-details": string;
@@ -32,9 +37,27 @@ interface TripDetailsProps {
 
 const TripDetails = ({ params }: TripDetailsProps) => {
   const { data, isLoading, error } = useGetTripQuery(params["trip-details"]);
+  const router = useRouter();
+  const [updateSpecificTripRequest, { isLoading: updateStatusLoading }] =
+    useUpdateSpecificTripRequestMutation();
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
+  const handleRequestTrip = async () => {
+    if (!isLoggedIn()) {
+      router.push("/login");
+    } else {
+      const res = await updateSpecificTripRequest(
+        params["trip-details"]
+      ).unwrap();
+
+      if (res?.id) {
+        toast.success("Travel Requested  Successfully");
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  };
 
   return (
     <Container>
@@ -308,6 +331,20 @@ const TripDetails = ({ params }: TripDetailsProps) => {
               </Grid>
             ))}
           </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 10,
+            }}
+          >
+            {data.status ? (
+              <Button disabled>Requested</Button>
+            ) : (
+              <Button onClick={handleRequestTrip}>Request for a trip</Button>
+            )}
+          </Box>
         </Box>
       </Paper>
     </Container>
