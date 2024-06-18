@@ -54,7 +54,7 @@ export default function TravelRequest() {
         sx={{ mb: 2 }}
         fontWeight={600}
       >
-        My Requested Trip
+        My Trips
       </Typography>
       <Grid container spacing={2} p={4}>
         {tripLoading

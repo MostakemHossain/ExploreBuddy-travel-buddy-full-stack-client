@@ -1,4 +1,4 @@
-import "../Loading/Loading.css";
+import "../loading/loading.css";
 function LoadingUI() {
   return (
     <section className=" flex justify-center items-center mx-auto h-screen">

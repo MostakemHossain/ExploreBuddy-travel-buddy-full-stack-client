@@ -80,15 +80,9 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}`,
           icon: DashboardIcon,
         },
-
         {
-          title: "My-trip",
-          path: `${role}/my-trips`,
-          icon: CardTravelIcon,
-        },
-        {
-          title: "My-Travel-Request",
-          path: `${role}/my-travel-request`,
+          title: "My Trip",
+          path: `${role}/my-trip`,
           icon: LuggageIcon,
         }
       );
