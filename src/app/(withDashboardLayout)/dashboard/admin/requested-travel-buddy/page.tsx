@@ -41,7 +41,6 @@ const RequestedTravelBuddy = () => {
       setRows(initialRows);
     }
   }, [data]);
-
   const handleStatusChange = async (event: any, id: string) => {
     const newStatus = event.target.value;
     setRows((prevRows: any) =>
@@ -49,6 +48,7 @@ const RequestedTravelBuddy = () => {
         row.id === id ? { ...row, status: newStatus } : row
       )
     );
+   
 
     try {
       const res = await updateSpecificTripRequest({ id, newStatus }).unwrap();

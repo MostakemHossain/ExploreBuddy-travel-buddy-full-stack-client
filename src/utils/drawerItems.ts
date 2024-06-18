@@ -81,7 +81,7 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
-          title: "My Trip",
+          title: "My Requested Trip",
           path: `${role}/my-trip`,
           icon: LuggageIcon,
         }
