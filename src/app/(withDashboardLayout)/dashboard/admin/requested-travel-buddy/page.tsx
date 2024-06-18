@@ -1,7 +1,7 @@
 "use client";
 import {
   useGetALLTripRequestQuery,
-  useUpdateSpecificTripRequestMutation,
+  useUpdateUserTripRequestMutation,
 } from "@/redux/api/tripRequest";
 import {
   Box,
@@ -18,8 +18,8 @@ import { toast } from "sonner";
 
 const RequestedTravelBuddy = () => {
   const { data, isLoading } = useGetALLTripRequestQuery("");
-  const [updateSpecificTripRequest, { isLoading: updateStatusLoading }] =
-    useUpdateSpecificTripRequestMutation();
+  const [updateUserTripRequest, { isLoading: updateStatusLoading }] =
+    useUpdateUserTripRequestMutation();
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -48,10 +48,9 @@ const RequestedTravelBuddy = () => {
         row.id === id ? { ...row, status: newStatus } : row
       )
     );
-   
 
     try {
-      const res = await updateSpecificTripRequest({ id, newStatus }).unwrap();
+      const res = await updateUserTripRequest({ id, newStatus }).unwrap();
       if (res.id) {
         toast.success("Travel Requested Updated Successfully");
       }

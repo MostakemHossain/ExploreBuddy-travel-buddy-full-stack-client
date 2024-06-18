@@ -2,10 +2,13 @@
 
 import ExploreBuddyForm from "@/components/Forms/ExploreBuddyForm";
 import ExploreBuddyInput from "@/components/Forms/ExploreBuddyInput";
+import { authKey } from "@/constants/authKey";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import KeyIcon from "@mui/icons-material/Key";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { deleteCookies } from "../../../../services/actions/deleteCookies";
 
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -17,13 +20,20 @@ const validationSchema = z.object({
 });
 
 const ChangePassword = () => {
+  const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
+
   const onSubmit = async (values: FieldValues) => {
     try {
-      const res = await changePassword(values);
+      const res = await changePassword(values).unwrap();
 
-      if (res.data.message === "Password change successfully") {
+      if (res.message === "Password change successfully") {
         toast.success("Password Change Successfully");
+
+        localStorage.removeItem(authKey);
+        deleteCookies([authKey, "refreshToken"]);
+        router.push("/");
+        router.refresh();
       } else {
         toast.error("Password Incorrect");
       }
@@ -92,7 +102,7 @@ const ChangePassword = () => {
         </Grid>
 
         <Button type="submit" sx={{ width: "100%", my: 2 }}>
-          change Password
+          Change Password
         </Button>
       </ExploreBuddyForm>
     </Box>

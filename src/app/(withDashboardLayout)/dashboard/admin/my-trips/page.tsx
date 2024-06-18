@@ -130,7 +130,7 @@ const MyTrip = () => {
           style={{ width: "100%", marginTop: 1 }}
         >
           <Link
-            href={`/dashboard/${userProfile.role.toLowerCase()}/my-trips/${
+            href={`/dashboard/${userProfile?.role.toLowerCase()}/my-trips/${
               params.id
             }`}
           >
