@@ -1,6 +1,6 @@
 "use client";
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
-import LoadingUI from "@/components/UI/loading/loading";
+import LoadingUI from "@/components/UI/Loading/Loading";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Grid, TextField, Typography } from "@mui/material";
