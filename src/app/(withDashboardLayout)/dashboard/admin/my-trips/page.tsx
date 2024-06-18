@@ -4,12 +4,12 @@ import {
   useDeleteMyTripMutation,
   useGetMyTripQuery,
 } from "@/redux/api/tourApi";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { useDebounced } from "@/redux/hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
-  Button,
   IconButton,
   Skeleton,
   Stack,
@@ -25,6 +25,7 @@ import DeleteTripModal from "./components/DeleteTripModal";
 import RequestTripModal from "./components/RequestTripModal";
 
 const MyTrip = () => {
+  const { data: userProfile } = useGetMyProfileQuery({});
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedTerm = useDebounced({
@@ -119,34 +120,6 @@ const MyTrip = () => {
     { field: "startDate", headerName: "Start Date", flex: 1 },
     { field: "endDate", headerName: "End Date", flex: 1 },
     {
-      field: "userId",
-      headerName: "Request Trip",
-      flex: 1,
-      renderCell: (params) => {
-        const tripStatus = params.row.status;
-        const isRequested = requestedTrips.includes(String(params.id));
-        const isDisabled = tripStatus || isRequested;
-
-        return (
-          <Box
-            textAlign="center"
-            sx={{
-              mr: 15,
-            }}
-          >
-            <Button
-              onClick={() =>
-                handleRequestTrip(String(params.id), String(params.row.userId))
-              }
-              disabled={isDisabled}
-            >
-              {isDisabled ? "Requested" : "Request Trip"}
-            </Button>
-          </Box>
-        );
-      },
-    },
-    {
       field: "actions",
       headerName: "Actions",
       renderCell: (params) => (
@@ -156,7 +129,11 @@ const MyTrip = () => {
           justifyContent="center"
           style={{ width: "100%", marginTop: 1 }}
         >
-          <Link href={`/dashboard/user/my-trips/${params.id}`}>
+          <Link
+            href={`/dashboard/${userProfile.role.toLowerCase()}/my-trips/${
+              params.id
+            }`}
+          >
             <IconButton
               sx={{
                 color: "primary.main",

@@ -1,9 +1,9 @@
 "use client";
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
+import LoadingUI from "@/components/UI/loading/loading";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Grid, TextField, Typography } from "@mui/material";
-import { motion } from "framer-motion";
 import { useState } from "react";
 
 const loadingContainer = {
@@ -90,26 +90,7 @@ const TourPage = () => {
 
       <Box sx={{ padding: "20px" }}>
         {isLoading ? (
-          <Box sx={loadingContainer}>
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-          </Box>
+          <LoadingUI />
         ) : (
           <>
             <Typography

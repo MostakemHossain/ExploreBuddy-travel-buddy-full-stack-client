@@ -35,10 +35,21 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
+          title: "Create Trip",
+          path: `${role}/create-trip`,
+          icon: BackpackIcon,
+        },
+        {
+          title: "My-trip",
+          path: `${role}/my-trips`,
+          icon: CardTravelIcon,
+        },
+        {
           title: "Manage Users",
           path: `${role}/manage-users`,
           icon: PeopleIcon,
         },
+
         {
           title: "Requested Travel Buddy",
           path: `${role}/requested-travel-buddy`,
@@ -69,11 +80,7 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}`,
           icon: DashboardIcon,
         },
-        {
-          title: "Create Trip",
-          path: `${role}/create-trip`,
-          icon: BackpackIcon,
-        },
+
         {
           title: "My-trip",
           path: `${role}/my-trips`,

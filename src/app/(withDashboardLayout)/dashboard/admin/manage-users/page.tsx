@@ -5,11 +5,9 @@ import {
 } from "@/redux/api/manageUserApi";
 import {
   Box,
-  Button,
   FormControl,
   MenuItem,
   Select,
-  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -40,33 +38,32 @@ const ManageUsers = () => {
   const [changes, setChanges] = useState<Changes>({});
   const [updateUsers, { isLoading: isUpdating }] = useUpdateUsersMutation();
 
-  const handleChange = (
+  const handleChange = async (
     id: GridRowId,
     field: keyof User,
     value: string | boolean
   ) => {
-    setChanges((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
-  };
-
-  const handleSaveChanges = async () => {
     try {
-      for (const id in changes) {
-        const change = changes[id];
-        const res = await updateUsers({ id, ...change }).unwrap();
-        if (res.id) {
-          toast.success("User Updated Successfull");
-        }
-      }
+      const change = {
+        id,
+        [field]: value,
+      };
+      // Optimistically update changes state
+      setChanges((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          [field]: value,
+        },
+      }));
 
-      setChanges({});
+      // Perform updateUsers mutation immediately
+      const res = await updateUsers(change).unwrap();
+      if (res.id) {
+        toast.success("User Updated Successfully");
+      }
     } catch (error) {
-      console.error("Failed to update users:", error);
+      console.error("Failed to update user:", error);
     }
   };
 
@@ -204,12 +201,6 @@ const ManageUsers = () => {
             rows={data || []}
             rowHeight={100}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10, 20]}
             autoHeight
             sx={{
               "& .MuiDataGrid-columnHeaders": {
@@ -231,26 +222,7 @@ const ManageUsers = () => {
             }}
           />
         </Box>
-      ) : (
-        <Box sx={{ width: "100%", p: 4 }}>
-          <Skeleton />
-          <Skeleton animation="wave" />
-          <Skeleton animation="wave" />
-          <Skeleton animation="wave" />
-          <Skeleton animation="wave" />
-          <Skeleton animation={false} />
-        </Box>
-      )}
-      <Stack direction={"row"} justifyContent={"flex-end"} sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSaveChanges}
-          disabled={isUpdating}
-        >
-          {isUpdating ? "Saving..." : "Save Changes"}
-        </Button>
-      </Stack>
+      ) : null}
     </Box>
   );
 };

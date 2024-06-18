@@ -1,7 +1,9 @@
+import LoadingUI from "@/components/UI/loading/loading";
+
 const loading = () => {
   return (
     <div>
-      <h1>Loading......</h1>
+      <LoadingUI />
     </div>
   );
 };
