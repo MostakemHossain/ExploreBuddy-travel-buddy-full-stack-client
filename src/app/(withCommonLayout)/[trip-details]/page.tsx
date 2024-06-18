@@ -41,8 +41,6 @@ const TripDetails = ({ params }: TripDetailsProps) => {
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
-<<<<<<< HEAD
-  console.log(params["trip-details"]);
   const handleRequestTrip = async () => {
     if (!isLoggedIn()) {
       router.push("/login");
@@ -58,8 +56,6 @@ const TripDetails = ({ params }: TripDetailsProps) => {
       }
     }
   };
-=======
->>>>>>> 479f716 (some modification)
 
   return (
     <Container>
@@ -341,11 +337,11 @@ const TripDetails = ({ params }: TripDetailsProps) => {
               mt: 10,
             }}
           >
-<<<<<<< HEAD
-            <Button onClick={handleRequestTrip}>Request for a trip</Button>
-=======
-            <Button>Request for a trip</Button>
->>>>>>> 479f716 (some modification)
+            {data.status ? (
+              <Button disabled>Requested</Button>
+            ) : (
+              <Button onClick={handleRequestTrip}>Request for a trip</Button>
+            )}
           </Box>
         </Box>
       </Paper>
