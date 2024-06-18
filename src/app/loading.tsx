@@ -1,4 +1,4 @@
-import LoadingState from "../components/UI/Loading/Loadings";
+import LoadingState from "@/components/UI/Loading/Loadings";
 
 const loading = () => {
   return (
