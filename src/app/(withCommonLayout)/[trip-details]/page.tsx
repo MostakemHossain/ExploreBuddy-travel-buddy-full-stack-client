@@ -1,7 +1,6 @@
 "use client";
 import { useGetTripQuery } from "@/redux/api/tourApi";
 import { useUpdateSpecificTripRequestMutation } from "@/redux/api/tripRequest";
-import { isLoggedIn } from "@/services/auth.services";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -25,7 +24,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 type TParams = {
   "trip-details": string;
@@ -43,21 +41,6 @@ const TripDetails = ({ params }: TripDetailsProps) => {
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
-  const handleRequestTrip = async () => {
-    if (!isLoggedIn()) {
-      router.push("/login");
-    } else {
-      const res = await updateSpecificTripRequest(
-        params["trip-details"]
-      ).unwrap();
-
-      if (res?.id) {
-        toast.success("Travel Requested  Successfully");
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  };
 
   return (
     <Container>
@@ -339,11 +322,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
               mt: 10,
             }}
           >
-            {data.status ? (
-              <Button disabled>Requested</Button>
-            ) : (
-              <Button onClick={handleRequestTrip}>Request for a trip</Button>
-            )}
+            <Button>Request for a trip</Button>
           </Box>
         </Box>
       </Paper>
