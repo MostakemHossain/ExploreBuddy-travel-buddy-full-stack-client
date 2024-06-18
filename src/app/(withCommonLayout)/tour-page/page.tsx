@@ -1,6 +1,5 @@
 "use client";
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
-import LoadingUI from "@/components/UI/Loading/Loadings";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
 import { Box, Grid, TextField, Typography } from "@mui/material";
@@ -90,7 +89,7 @@ const TourPage = () => {
 
       <Box sx={{ padding: "20px" }}>
         {isLoading ? (
-          <LoadingUI />
+          <Box>loading.....</Box>
         ) : (
           <>
             <Typography

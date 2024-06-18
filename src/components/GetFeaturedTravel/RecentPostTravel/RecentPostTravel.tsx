@@ -1,5 +1,5 @@
 "use client";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import RecentPostCard from "./components/RecentPostCard/RecentPostCard";
 
@@ -26,7 +26,7 @@ const RecentPostTravel = () => {
   const fetchTrips = async () => {
     try {
       const res = await fetch(
-        "http://localhost:8000/api/trips/all-trips?limit=3"
+        "https://tour-explore-buddy.vercel.app/api/trips/all-trips?limit=3"
       );
       const data = await res.json();
       setTrips(data.data);
@@ -65,7 +65,17 @@ const RecentPostTravel = () => {
 
       <Box sx={{ padding: "20px" }}>
         {isLoading ? (
-          <Box>Loading...</Box>
+          <Stack spacing={1}>
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton animation={false} />
+            <Skeleton animation={false} />
+          </Stack>
         ) : (
           <Grid
             container

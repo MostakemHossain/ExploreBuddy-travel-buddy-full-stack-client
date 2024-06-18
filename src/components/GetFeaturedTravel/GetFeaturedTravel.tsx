@@ -2,41 +2,17 @@
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import {
+  Box,
+  Button,
+  Grid,
+  Skeleton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-
-const loadingContainer = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-};
-
-const loadingCircle = {
-  width: "20px",
-  height: "20px",
-  backgroundColor: "#3498db",
-  borderRadius: "50%",
-  margin: "0 5px",
-};
-
-const loadingCircleVariants = {
-  start: {
-    scale: 0.8,
-    opacity: 0.5,
-  },
-  end: {
-    scale: 1.2,
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      yoyo: Infinity,
-      ease: "easeInOut",
-    },
-  },
-};
 
 const GetFeaturedTravel = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,26 +69,29 @@ const GetFeaturedTravel = () => {
 
       <Box sx={{ padding: "20px" }}>
         {isLoading ? (
-          <Box sx={loadingContainer}>
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-            <motion.span
-              style={loadingCircle}
-              variants={loadingCircleVariants}
-              initial="start"
-              animate="end"
-            />
-          </Box>
+          <Stack>
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Stack>
         ) : (
           <>
             <Grid
@@ -121,7 +100,7 @@ const GetFeaturedTravel = () => {
               justifyContent="center"
               alignItems="center"
             >
-              {data?.slice(0, 6).map((trip: any, index: number) => (
+              {data?.slice(3, 9).map((trip: any, index: number) => (
                 <Grid item key={index} xs={12} sm={6} md={4}>
                   <TravelCard trip={trip} />
                 </Grid>
@@ -129,16 +108,18 @@ const GetFeaturedTravel = () => {
             </Grid>
           </>
         )}
-        <Box
-          sx={{
-            mt: 5,
-          }}
-        >
-          {" "}
-          <Link href={"/tour-page"}>
-            <Button>See more</Button>
-          </Link>
-        </Box>
+        {data && data?.length && (
+          <Box
+            sx={{
+              mt: 5,
+            }}
+          >
+            {" "}
+            <Link href={"/tour-page"}>
+              <Button>See more</Button>
+            </Link>
+          </Box>
+        )}
       </Box>
     </Box>
   );
