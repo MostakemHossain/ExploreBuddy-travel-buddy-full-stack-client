@@ -1,7 +1,6 @@
 "use client";
 import { useGetTripQuery } from "@/redux/api/tourApi";
 import { useUpdateSpecificTripRequestMutation } from "@/redux/api/tripRequest";
-import { isLoggedIn } from "@/services/auth.services";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -25,7 +24,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 type TParams = {
   "trip-details": string;
@@ -43,6 +41,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
+<<<<<<< HEAD
   console.log(params["trip-details"]);
   const handleRequestTrip = async () => {
     if (!isLoggedIn()) {
@@ -59,6 +58,8 @@ const TripDetails = ({ params }: TripDetailsProps) => {
       }
     }
   };
+=======
+>>>>>>> 479f716 (some modification)
 
   return (
     <Container>
@@ -340,7 +341,11 @@ const TripDetails = ({ params }: TripDetailsProps) => {
               mt: 10,
             }}
           >
+<<<<<<< HEAD
             <Button onClick={handleRequestTrip}>Request for a trip</Button>
+=======
+            <Button>Request for a trip</Button>
+>>>>>>> 479f716 (some modification)
           </Box>
         </Box>
       </Paper>
