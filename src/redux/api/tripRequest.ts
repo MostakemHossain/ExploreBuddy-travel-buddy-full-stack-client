@@ -28,7 +28,7 @@ const tripRequestApi = baseApi.injectEndpoints({
     updateUserTripRequest: build.mutation({
       query: ({ id, newStatus }) => {
         return {
-          url: `/trip/travel-buddies/${id}/respond`,
+          url: `/Jtrip/travel-buddies/${id}/respond`,
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
