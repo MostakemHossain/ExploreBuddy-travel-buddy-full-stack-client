@@ -5,7 +5,7 @@ import { tagTypeList } from "../tag-types";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api",
+    baseUrl: "https://tour-explore-buddy.vercel.app/api",
   }),
   endpoints: () => ({}),
   tagTypes: tagTypeList,
