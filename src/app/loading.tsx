@@ -1,9 +1,9 @@
-import LoadingUI from "@/components/UI/Loading/Loading";
+import LoadingState from "../components/UI/Loading/Loadings";
 
 const loading = () => {
   return (
     <div>
-      <LoadingUI />
+      <LoadingState />
     </div>
   );
 };

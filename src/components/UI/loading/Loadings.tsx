@@ -1,5 +1,5 @@
 import "../Loading/Loading.css";
-function LoadingUI() {
+function LoadingState() {
   return (
     <section className=" flex justify-center items-center mx-auto h-screen">
       <svg
@@ -104,4 +104,4 @@ function LoadingUI() {
   );
 }
 
-export default LoadingUI;
+export default LoadingState;
