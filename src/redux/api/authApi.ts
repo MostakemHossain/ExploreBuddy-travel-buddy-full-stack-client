@@ -3,14 +3,22 @@ import { baseApi } from "./baseApi";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // userLogin: build.mutation({
-    //   query: (loginData) => ({
-    //     url: `/login`,
-    //     method: "POST",
-    //     data: loginData,
-    //   }),
-    //   invalidatesTags: [tagTypes.user],
-    // }),
+    userLogin: build.mutation({
+      query: (loginData) => ({
+        url: `/login`,
+        method: "POST",
+        data: loginData,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
+    userRegistration: build.mutation({
+      query: (loginData) => ({
+        url: `/register`,
+        method: "POST",
+        data: loginData,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
     changePassword: build.mutation({
       query: (data) => ({
         url: `/change-password`,
@@ -40,7 +48,8 @@ export const authApi = baseApi.injectEndpoints({
 });
 
 export const {
-  // useUserLoginMutation,
+  useUserLoginMutation,
+  useUserRegistrationMutation,
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,

@@ -1,6 +1,8 @@
 "use client";
-import { registerUser } from "@/services/actions/registerUser";
-import { userLogin } from "@/services/actions/userLogin";
+import {
+  useUserLoginMutation,
+  useUserRegistrationMutation,
+} from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
 import Visibility from "@mui/icons-material/Visibility";
@@ -28,6 +30,8 @@ type Inputs = {
 
 const RegisterForm = () => {
   const router = useRouter();
+  const [userLogin] = useUserLoginMutation();
+  const [userRegistration] = useUserRegistrationMutation();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -45,9 +49,9 @@ const RegisterForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     const data = modifyPayload(values);
     try {
-      const res = await registerUser(data);
+      const res = await userRegistration(data);
       if (res?.data?.id) {
-        toast.success(res?.message);
+        toast.success("User Registration Successfully");
         const result = await userLogin({
           email: values.email,
           password: values.password,
@@ -57,7 +61,7 @@ const RegisterForm = () => {
           router.push("/dashboard");
         }
       } else {
-        toast.error(res?.message);
+        toast.error("Registration failed");
       }
     } catch (error: any) {
       toast.error(error.message);

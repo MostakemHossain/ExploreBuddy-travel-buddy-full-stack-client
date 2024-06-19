@@ -1,5 +1,5 @@
 "use client";
-import { userLogin } from "@/services/actions/userLogin";
+import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.services";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -22,6 +22,7 @@ import { UserLoginType } from "./page";
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [userLogin] = useUserLoginMutation();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -42,11 +43,11 @@ export const LoginForm = () => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
-        toast.success(res?.message);
+        toast.success("User login Successfully");
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/dashboard");
       } else {
-        setError(res?.message);
+        setError("Something went wrong");
       }
     } catch (error: any) {
       toast.error(error.message);
