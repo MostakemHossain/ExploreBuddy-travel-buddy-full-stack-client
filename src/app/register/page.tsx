@@ -1,8 +1,6 @@
 "use client";
-import {
-  useUserLoginMutation,
-  useUserRegistrationMutation,
-} from "@/redux/api/authApi";
+import { useLoginUserMutation } from "@/redux/api/authApi";
+import { registerUser } from "@/services/actions/registerUser";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
 import Visibility from "@mui/icons-material/Visibility";
@@ -29,9 +27,8 @@ type Inputs = {
 };
 
 const RegisterForm = () => {
+  const [loginUser] = useLoginUserMutation();
   const router = useRouter();
-  const [userLogin] = useUserLoginMutation();
-  const [userRegistration] = useUserRegistrationMutation();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -47,12 +44,13 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
+    console.log(values);
     const data = modifyPayload(values);
     try {
-      const res = await userRegistration(data);
+      const res = await registerUser(data);
       if (res?.data?.id) {
-        toast.success("User Registration Successfully");
-        const result = await userLogin({
+        toast.success("user registration successfully");
+        const result = await loginUser({
           email: values.email,
           password: values.password,
         });
@@ -61,7 +59,7 @@ const RegisterForm = () => {
           router.push("/dashboard");
         }
       } else {
-        toast.error("Registration failed");
+        toast.error("Something went wrong");
       }
     } catch (error: any) {
       toast.error(error.message);

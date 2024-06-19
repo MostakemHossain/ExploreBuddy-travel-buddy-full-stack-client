@@ -1,5 +1,5 @@
 "use client";
-import { useUserLoginMutation } from "@/redux/api/authApi";
+import { useLoginUserMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.services";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -21,8 +21,8 @@ import { UserLoginType } from "./page";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loginUser] = useLoginUserMutation();
   const [error, setError] = useState("");
-  const [userLogin] = useUserLoginMutation();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -41,16 +41,21 @@ export const LoginForm = () => {
     values: UserLoginType
   ) => {
     try {
-      const res = await userLogin(values);
-      if (res?.data?.accessToken) {
-        toast.success("User login Successfully");
-        storeUserInfo({ accessToken: res?.data?.accessToken });
+      const res = await loginUser(values).unwrap();
+      if (res.accessToken) {
+        toast.success("User login successfully");
+        storeUserInfo({ accessToken: res.accessToken });
         router.push("/dashboard");
-      } else {
-        setError("Something went wrong");
       }
     } catch (error: any) {
-      toast.error(error.message);
+      const errorMessage = error.message || "An error occurred";
+      if (errorMessage.toLowerCase().includes("refresh token")) {
+        setError("Invalid email or password. Please try again.");
+      } else {
+        setError(errorMessage);
+      }
+      toast.error(errorMessage);
+      setError(error.message);
     }
   };
 
