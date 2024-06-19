@@ -476,7 +476,7 @@ const AboutUs = () => {
           </Box>
         ) : (
           <Grid container spacing={4}>
-            {data.length &&
+            {data &&
               data?.map((member: any, index: number) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Card>
