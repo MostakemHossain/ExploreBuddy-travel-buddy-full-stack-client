@@ -5,7 +5,7 @@ export const registerUser = async (formData: FormData) => {
     {
       method: "POST",
       body: formData,
-      credentials: "include",
+      cache: "no-store",
     }
   );
   const userInfo = await res.json();
