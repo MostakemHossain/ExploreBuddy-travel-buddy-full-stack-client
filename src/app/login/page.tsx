@@ -2,7 +2,7 @@
 
 import { LoginForm } from "./LoginForm";
 
-export type UserLogin = {
+export type UserLoginType = {
   email: string;
   password: string;
 };

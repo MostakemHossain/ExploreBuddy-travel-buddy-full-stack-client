@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { UserLogin } from "./page";
+import { UserLoginType } from "./page";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,9 +34,11 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLogin>();
+  } = useForm<UserLoginType>();
 
-  const onSubmit: SubmitHandler<UserLogin> = async (values: UserLogin) => {
+  const onSubmit: SubmitHandler<UserLoginType> = async (
+    values: UserLoginType
+  ) => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
