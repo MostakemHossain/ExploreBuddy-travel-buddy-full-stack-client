@@ -15,13 +15,13 @@ import {
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Grid,
   List,
   ListItem,
   ListItemText,
   Paper,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,17 @@ const TripDetails = ({ params }: TripDetailsProps) => {
   const [updateSpecificTripRequest, { isLoading: updateStatusLoading }] =
     useUpdateSpecificTripRequestMutation();
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) {
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <Skeleton />
+      <Skeleton animation="wave" />
+      <Skeleton animation={false} />
+    </Box>;
+  }
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
   const handleRequestTrip = async () => {
     if (!isLoggedIn()) {
