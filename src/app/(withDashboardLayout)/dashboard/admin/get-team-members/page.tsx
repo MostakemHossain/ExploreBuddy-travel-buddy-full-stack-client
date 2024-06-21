@@ -171,7 +171,7 @@ const AllEmployees = () => {
         onConfirm={confirmDelete}
       />
       <Typography color="primary.main" variant="h4" fontWeight={600} mb={2}>
-        ALL User Contact Information
+        ALL Member & Employee
       </Typography>
 
       {!isLoading ? (
