@@ -1,6 +1,9 @@
 "use client";
-import { useLoginUserMutation } from "@/redux/api/authApi";
-import { registerUser } from "@/services/actions/registerUser";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from "@/redux/api/authApi";
+// import { registerUser } from "@/services/actions/registerUser";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
 import Visibility from "@mui/icons-material/Visibility";
@@ -28,6 +31,7 @@ type Inputs = {
 
 const RegisterForm = () => {
   const [loginUser] = useLoginUserMutation();
+  const [registerUser] = useRegisterUserMutation();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -44,7 +48,6 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
-    console.log(values);
     const data = modifyPayload(values);
     try {
       const res = await registerUser(data);
