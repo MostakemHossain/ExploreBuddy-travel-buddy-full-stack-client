@@ -41,7 +41,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
   const [updateSpecificTripRequest, { isLoading: updateStatusLoading }] =
     useUpdateSpecificTripRequestMutation();
 
-  if (isLoading) {
+  if (isLoading || updateStatusLoading) {
     <Box
       sx={{
         width: "100%",
@@ -80,7 +80,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
           gutterBottom
           sx={{ color: "#1976d2", fontWeight: "bold" }}
         >
-          Trip to {data.destination}
+          Trip to {data?.destination}
         </Typography>
 
         <Box sx={{ marginBottom: 3 }}>
@@ -102,7 +102,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             variant="body1"
             gutterBottom
           >
-            {data.startDate} to {data.endDate}
+            {data?.startDate} to {data?.endDate}
           </Typography>
         </Box>
 
@@ -125,7 +125,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             variant="body1"
             gutterBottom
           >
-            $ {data.budget}
+            $ {data?.budget}
           </Typography>
         </Box>
 
@@ -148,7 +148,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             variant="body1"
             gutterBottom
           >
-            {data.travelType}
+            {data?.travelType}
           </Typography>
         </Box>
 
@@ -173,7 +173,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             gutterBottom
             sx={{ whiteSpace: "pre-wrap" }}
           >
-            {data.description}
+            {data?.description}
           </Typography>
         </Box>
 
@@ -194,7 +194,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             Photos
           </Typography>
           <Grid container spacing={2}>
-            {data.photos.slice(0, 3).map((photo: string, index: number) => (
+            {data?.photos.slice(0, 3).map((photo: string, index: number) => (
               <Grid item xs={12} sm={4} key={index}>
                 <Box
                   component="img"
@@ -229,7 +229,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             Activities
           </Typography>
           <Grid container spacing={3}>
-            {data.activities.map((activity: string, index: number) => (
+            {data?.activities.map((activity: string, index: number) => (
               <Grid item xs={12} sm={6} key={index}>
                 <Card
                   sx={{
@@ -244,7 +244,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
                 >
                   <CardContent>
                     <List>
-                      {activity.split(", ").map((item, i) => (
+                      {activity?.split(", ").map((item, i) => (
                         <ListItem key={i} sx={{ paddingY: 0 }}>
                           <ListItemText
                             primary={item}
@@ -274,7 +274,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             Itinerary
           </Typography>
           <Grid container spacing={2}>
-            {data.itinerary.map((day: string, index: number) => (
+            {data?.itinerary.map((day: string, index: number) => (
               <Grid item xs={12} sm={6} key={index}>
                 <Card
                   sx={{
@@ -320,7 +320,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
             More Photos
           </Typography>
           <Grid container spacing={2}>
-            {data.photos.slice(3).map((photo: string, index: number) => (
+            {data?.photos?.slice(3).map((photo: string, index: number) => (
               <Grid item xs={12} sm={6} key={index}>
                 <Box
                   component="img"
