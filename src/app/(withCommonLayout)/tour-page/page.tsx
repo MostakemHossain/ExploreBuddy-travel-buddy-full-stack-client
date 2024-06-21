@@ -2,7 +2,7 @@
 import TravelCard from "@/components/TravelBookDetailsCard/TravelBookDetailsCard";
 import { useGetALLApprovalTripRequestQuery } from "@/redux/api/tripRequest";
 import { useDebounced } from "@/redux/hooks";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 const loadingContainer = {
@@ -89,7 +89,15 @@ const TourPage = () => {
 
       <Box sx={{ padding: "20px" }}>
         {isLoading ? (
-          <Box>loading.....</Box>
+          <Box
+            sx={{
+              width: "100%",
+            }}
+          >
+            <Skeleton />
+            <Skeleton animation="wave" />
+            <Skeleton animation={false} />
+          </Box>
         ) : (
           <>
             <Typography

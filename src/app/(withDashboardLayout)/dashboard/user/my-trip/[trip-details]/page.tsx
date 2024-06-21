@@ -12,13 +12,13 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Grid,
   List,
   ListItem,
   ListItemText,
   Paper,
+  Skeleton,
   Typography,
 } from "@mui/material";
 
@@ -33,7 +33,17 @@ interface TripDetailsProps {
 const TripDetails = ({ params }: TripDetailsProps) => {
   const { data, isLoading, error } = useGetTripQuery(params["trip-details"]);
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) {
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <Skeleton />
+      <Skeleton animation="wave" />
+      <Skeleton animation={false} />
+    </Box>;
+  }
   if (error) return <Alert severity="error">Error loading trip details</Alert>;
 
   return (

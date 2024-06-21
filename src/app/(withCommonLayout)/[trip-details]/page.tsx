@@ -339,11 +339,7 @@ const TripDetails = ({ params }: TripDetailsProps) => {
               mt: 10,
             }}
           >
-            {data.status ? (
-              <Button disabled>Requested</Button>
-            ) : (
-              <Button onClick={handleRequestTrip}>Request for a trip</Button>
-            )}
+            <Button onClick={handleRequestTrip}>Request for a trip</Button>
           </Box>
         </Box>
       </Paper>
